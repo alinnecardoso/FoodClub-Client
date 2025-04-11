@@ -1,0 +1,44 @@
+#formChooseRole{
+  height: 80vh;
+  width: 100% !important;
+  display: flex;
+  justify-content: space-between;
+
+  #radio-group{
+    display: flex;
+    justify-content: space-between;
+  }
+  label{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+
+    img{
+      width: 4rem;
+      height: 4rem;
+    }
+  }
+
+  h1{
+    font-size: 24px;
+    margin-bottom: 1rem;
+    color: #302F2F;
+  }
+  .form-group{
+    display: flex;
+    flex-direction: column;
+    row-gap: 2.5rem;
+  }
+  
+}
+
+#registerFormStepOne{
+  width: 100%;
+  max-width: 400px !important;
+}
+
+.buttonGroup{
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+}

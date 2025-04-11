@@ -1,0 +1,87 @@
+body {
+	min-height: auto;
+}
+
+form {
+	position: relative;
+	width: 400px;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+}
+
+.step-1-container,
+.step-2-container,
+.step-3-container,
+.step-4-container {
+  display: flex;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+    justify-content: space-around;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 8px;
+    /* box-shadow: 3px 6px 5px #0000000e; */
+    padding: 2rem 1rem;
+    width: 100%;
+    max-width: 500px;
+    height: 100vh;
+    flex-grow: 1;
+  transition: transform 0.5s ease, opacity 0.5s ease-out;
+}
+
+.step-1-container.visible,
+.step-2-container.visible,
+.step-3-container.visible
+.step-4container.visible{
+	display: flex;
+	flex-direction: row;
+	margin: 0;
+}
+
+.step-2-container #return {
+	display: flex;
+	justify-content: flex-start;
+	width: fit-content;
+}
+
+.step-2-container #return:hover {
+	font-weight: bold;
+}
+
+.basic-info-container {
+	display: flex;
+	flex-direction: column;
+	row-gap: 1rem;
+}
+
+.hidden {
+	transform: translateX(-100%);
+	opacity: 0;
+}
+
+.visible {
+	transform: translateX(0);
+	opacity: 1;
+}
+
+#btn-login {
+  border: 1px solid #bb3301;
+  background: #fff;
+  color: #bb3301;
+  font-weight: bold;
+}
+
+.imagem-fundo img {
+	min-height: 100vh;
+	height: 100%;
+	position: fixed;
+	object-fit: cover;
+	object-position: left;
+	z-index: -1;
+	max-width: fit-content;
+	width: 100%;
+}
+

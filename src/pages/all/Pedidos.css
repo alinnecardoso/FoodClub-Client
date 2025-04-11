@@ -1,0 +1,12 @@
+.pedidos-container {
+	margin-top: 60px;
+	margin: 60px auto 0 auto;
+}
+
+@media (min-width: 700px) {
+	.pedidos-container {
+		margin: 0;
+		margin-top: 60px;
+		width: 100%;
+	}
+}

@@ -1,0 +1,31 @@
+.estado-pedido-container {
+	border: 1px solid rgb(223, 223, 223);
+	padding: 0.25rem 0.5rem;
+	border-radius: 8px;
+	font-weight: 600;
+}
+
+.estado-pedido-container.Pendente {
+	background: #fff8b7;
+	color: #b69b01;
+}
+
+.estado-pedido-container.Confirmado {
+	background: #bdf8f8;
+	color: #0b0b0b;
+}
+
+.estado-pedido-container.Cancelado {
+	background: rgb(219, 219, 219);
+	color: grey;
+}
+
+.estado-pedido-container.Completado {
+	background: #bdf89d;
+	color: #01950a;
+}
+
+.estado-pedido-container.Preparando {
+	background: #bdf8f8;
+	color: #0b0b0b;
+}
