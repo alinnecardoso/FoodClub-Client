@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
+import { ConfigProvider } from "antd"; // <--- Importa aqui
 import { theme } from "./theme/theme";
 
 import "./index.css";
@@ -23,7 +24,7 @@ import PublicLayout from "./components/layouts/PublicLayout";
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <PublicLayout />, // Rotas públicas
+		element: <PublicLayout />,
 		errorElement: <NotFoundPage />,
 		children: [
 			{ path: "/", element: <InitialPage /> },
@@ -32,8 +33,8 @@ const router = createBrowserRouter([
 		],
 	},
 	{
-		path: "/", // Rotas protegidas
-		element: <ProtectedLayout />, // Navbar é incluído aqui
+		path: "/",
+		element: <ProtectedLayout />,
 		children: [
 			{ path: "/inicio", element: <HomePage /> },
 			{ path: "/refeicoes", element: <Refeicoes /> },
@@ -49,10 +50,18 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<ThemeProvider theme={theme}>
-			<CssBaseline />
-			<main>
-				<RouterProvider router={router} />
-			</main>
+			<ConfigProvider
+				theme={{
+					token: {
+						colorPrimary: "#7d0000",
+					},
+				}}
+			>
+				<CssBaseline />
+				<main>
+					<RouterProvider router={router} />
+				</main>
+			</ConfigProvider>
 		</ThemeProvider>
 	</StrictMode>
 );

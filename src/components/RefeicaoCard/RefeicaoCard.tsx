@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Rating } from "@mui/material";
 import "./RefeicaoCard.css";
 import { IDish } from "../../interfaces/dish";
+import BasicModal from "../modal/BasicModal";
 
 const mediaRatings = (ratings: { userId: string; rating: number }[]) => {
 	let sum = 0;
@@ -11,33 +13,46 @@ const mediaRatings = (ratings: { userId: string; rating: number }[]) => {
 };
 
 const RefeicaoCard = (props: IDish) => {
-	return (
-		<div className="refeicao-card-container">
-			<div
-				className="refeicao-img"
-				style={{
-					backgroundImage: `url(${props.image})`,
-				}}
-			></div>
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
-			<div className="refeicao-info-container">
-				<p className="r-title">{props.name}</p>
-				<p className="r-description">{props.description}</p>
-				<div className="r-price-container">
-					<p className="r-price">R$ {props.price.toFixed(2)}</p>
-					<div className="r-rating-container">
-						<Rating
-							name="half-rating"
-							defaultValue={mediaRatings(props.ratings)}
-							precision={0.5}
-							size="small"
-							readOnly
-						/>{" "}
-						({props.ratings.length})
+	const handleOpenModal = () => setIsModalOpen(true);
+	const handleCloseModal = () => setIsModalOpen(false);
+
+	return (
+		<>
+			<div className="refeicao-card-container" onClick={handleOpenModal}>
+				<div
+					className="refeicao-img"
+					style={{
+						backgroundImage: `url(${props.image})`,
+					}}
+				></div>
+
+				<div className="refeicao-info-container">
+					<p className="r-title">{props.name}</p>
+					<p className="r-description">{props.description}</p>
+					<div className="r-price-container">
+						<p className="r-price">R$ {props.price.toFixed(2)}</p>
+						<div className="r-rating-container">
+							<Rating
+								name="half-rating"
+								defaultValue={mediaRatings(props.ratings)}
+								precision={0.5}
+								size="small"
+								readOnly
+							/>
+							({props.ratings.length})
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+
+			<BasicModal
+				isOpen={isModalOpen}
+				handleOk={handleCloseModal}
+				handleCancel={handleCloseModal}
+			/>
+		</>
 	);
 };
 

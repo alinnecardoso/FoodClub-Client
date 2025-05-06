@@ -6,6 +6,6 @@ export interface ICompany extends IUser {
 	cnpj: string;
 	cep: string;
 	number: string;
-	affiliateRestaurants: string[]; // IDs dos restaurantes afiliados
-	employees: IEmployee[]; // IDs dos funcionários
+	affiliateRestaurants: string[];
+	employees: IEmployee[];
 }
