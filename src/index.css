@@ -6,6 +6,14 @@
 		Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+
+:root {
+	--title-desktop: 1.5rem;
+	--subtitle-desktop: 1.25rem;
+	--text-desktop: 1rem;
+	font-size: 14px;
+}
+
 html,
 body {
 	margin: 0;
@@ -22,10 +30,11 @@ body {
 #root-body {
 	padding: 0;
 }
+
 main {
 	display: flex;
 	flex-direction: column;
-	min-height: 100vh; /* Isso garante que ele ocupe pelo menos a altura total da viewport */
+	min-height: 100vh;
 }
 
 /* Container principal */
@@ -38,19 +47,30 @@ main {
 	box-sizing: border-box;
 }
 
+
+
 @media (min-width: 600px) {
 	.main-container {
-		margin-left: 60px; /* Espaço reservado para a navbar lateral */
+		margin-left: 60px;
+		/* Espaço reservado para a navbar lateral */
 		height: 100vh;
 		width: calc(100vw - 60px);
 		padding: 0 60px;
 	}
+
+
 }
+
 @media (min-width: 900px) {
 	.main-container {
-		margin-left: 200px; /* Espaço reservado para a navbar lateral */
+		margin-left: 200px;
+		/* Espaço reservado para a navbar lateral */
 		height: 100vh;
 		width: calc(100vw - 200px);
+	}
+
+	:root {
+		font-size: 18px;
 	}
 }
 

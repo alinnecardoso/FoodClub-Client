@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
-import { ConfigProvider } from "antd"; // <--- Importa aqui
+import { ConfigProvider } from "antd";
 import { theme } from "./theme/theme";
 
 import "./index.css";

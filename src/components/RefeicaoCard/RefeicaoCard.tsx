@@ -32,7 +32,6 @@ const RefeicaoCard = (props: IDish) => {
 					<p className="r-title">{props.name}</p>
 					<p className="r-description">{props.description}</p>
 					<div className="r-price-container">
-						<p className="r-price">R$ {props.price.toFixed(2)}</p>
 						<div className="r-rating-container">
 							<Rating
 								name="half-rating"
@@ -43,6 +42,7 @@ const RefeicaoCard = (props: IDish) => {
 							/>
 							({props.ratings.length})
 						</div>
+						<p className="r-price">R$ {props.price.toFixed(2)}</p>
 					</div>
 				</div>
 			</div>
