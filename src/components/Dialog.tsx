@@ -7,14 +7,14 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useRestaurantStore } from "../stores/restaurantStore";
 
 type Props = {
-	trigger?: React.ReactNode; // Elemento HTML personalizado para abrir o modal
-	buttonText?: string; // Texto do botão padrão (caso não passe `trigger`)
+	trigger?: React.ReactNode;
+	buttonText?: string;
 	confirmText?: string;
 	cancelText?: string;
-	titleText?: string; // Propriedade para o título
-	height?: string; // Nova propriedade para controlar a altura
+	titleText?: string;
+	height?: string;
 	children: React.ReactNode;
-	onConfirm?: () => void; // Função a ser executada no botão de confirmar
+	onConfirm?: () => void;
 };
 
 export default function FormDialog({
@@ -43,13 +43,12 @@ export default function FormDialog({
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		if (onConfirm) onConfirm(); // Executa a função passada
+		if (onConfirm) onConfirm();
 		handleClose();
 	};
 
 	return (
 		<>
-			{/* Renderiza o trigger ou o botão padrão */}
 			{trigger ? (
 				React.cloneElement(trigger as React.ReactElement, {
 					onClick: handleClickOpen,

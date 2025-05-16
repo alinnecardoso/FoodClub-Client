@@ -93,8 +93,9 @@
 }
 
 @media (max-width:900px) {
+
 	.refeicao-card-container {
-		width: 160px;
+		width: 150px;
 		height: 200px;
 	}
 

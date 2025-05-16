@@ -51,7 +51,9 @@ const RefeicaoCard = (props: IDish) => {
 				isOpen={isModalOpen}
 				handleOk={handleCloseModal}
 				handleCancel={handleCloseModal}
-			/>
+			>
+				<h1>eai</h1>
+			</BasicModal>
 		</>
 	);
 };
