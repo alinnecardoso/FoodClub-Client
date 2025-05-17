@@ -1,8 +1,8 @@
 form {
 	display: flex;
 	flex-direction: column;
-	width: 90% !important;
-	max-width: 400px;
+	/* width: 90% !important; */
+	/* max-width: 400px; */
 	position: absolute;
 	row-gap: 1rem;
 }
@@ -60,9 +60,11 @@ body {
 	width: auto;
 	text-align: end;
 }
+
 .form-principal p {
 	color: #949494;
 }
+
 #btn-cadastro {
 	border: 1px solid #bb3301;
 	background: #fff;
@@ -76,6 +78,7 @@ body {
 	row-gap: 5px;
 	margin-bottom: 0.5rem;
 }
+
 /* teste */
 input {
 	height: 2rem;

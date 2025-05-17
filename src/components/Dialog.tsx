@@ -1,9 +1,5 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
+import React, { useState } from "react";
+import { Button, Modal } from "antd";
 import { useRestaurantStore } from "../stores/restaurantStore";
 
 type Props = {
@@ -15,6 +11,8 @@ type Props = {
 	height?: string;
 	children: React.ReactNode;
 	onConfirm?: () => void;
+	onCancel?: () => void;
+	onClose?: () => void;
 };
 
 export default function FormDialog({
@@ -23,11 +21,10 @@ export default function FormDialog({
 	confirmText = "Criar",
 	cancelText = "Cancelar",
 	titleText = "Modal title",
-	height = "auto",
 	children,
 	onConfirm,
 }: Props) {
-	const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = useState(false);
 	const { dishDTO, cleanDishDTO } = useRestaurantStore();
 
 	titleText = dishDTO.name !== "" ? dishDTO.name : titleText;
@@ -37,12 +34,10 @@ export default function FormDialog({
 	};
 
 	const handleClose = () => {
-		cleanDishDTO();
-		setOpen(false);
+		if (onclose) onclose();
 	};
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
+	const handleOk = () => {
 		if (onConfirm) onConfirm();
 		handleClose();
 	};
@@ -54,29 +49,23 @@ export default function FormDialog({
 					onClick: handleClickOpen,
 				})
 			) : (
-				<Button variant="contained" onClick={handleClickOpen}>
+				<Button type="primary" onClick={handleClickOpen}>
 					{buttonText}
 				</Button>
 			)}
-			<Dialog
+
+			<Modal
 				open={open}
+				title={<strong>{titleText}</strong>}
+				onCancel={handleClose}
+				onOk={handleOk}
+				okText={confirmText}
+				cancelText={cancelText}
 				onClose={handleClose}
-				PaperProps={{
-					component: "form",
-					onSubmit: handleSubmit,
-				}}
+
 			>
-				<DialogTitle style={{ fontWeight: "bold" }}>{titleText}</DialogTitle>
-				<DialogContent style={{ height, paddingTop: "0.5rem" }}>
-					{children}
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleClose}>{cancelText}</Button>
-					<Button type="submit" variant="contained">
-						{confirmText}
-					</Button>
-				</DialogActions>
-			</Dialog>
+				{children}
+			</Modal>
 		</>
 	);
 }
