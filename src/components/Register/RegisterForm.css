@@ -1,71 +1,110 @@
+/* === Base === */
 body {
-	min-height: auto;
+  min-height: 100vh;
+  margin: 0;
+  font-family: sans-serif;
+  overflow: hidden;
 }
 
-form {
-	position: relative;
-	width: 400px;
+.RegisterForm {
+  display: flex;
+  flex-direction: column;
+  min-height: 80vh;
+	max-width:400px;
+	width:100%;
+  justify-content: space-between;
+  align-items: stretch;
+	padding-top:2rem;
 }
 
+/* === Layout Principal === */
 .container {
-	display: flex;
-	justify-content: center;
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  overflow: hidden;
 }
 
+.form-container {
+  background-color: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  width: 480px;
+  min-height: 100vh;
+  padding: 32px 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+/* === Etapas === */
 .step-1-container,
 .step-2-container,
 .step-3-container,
 .step-4-container {
   display: flex;
-    flex-wrap: wrap;
-    flex-direction: row-reverse;
-    justify-content: space-around;
-    align-items: center;
-    background: #ffffff;
-    border-radius: 8px;
-    /* box-shadow: 3px 6px 5px #0000000e; */
-    padding: 2rem 1rem;
-    width: 100%;
-    max-width: 500px;
-    height: 100vh;
-    flex-grow: 1;
+  flex-direction: column;
+	align-items: center;
+  row-gap: 1rem;
+  background: #ffffff;
+  border-radius: 8px;
+  width: 100%;
   transition: transform 0.5s ease, opacity 0.5s ease-out;
 }
 
-.step-1-container.visible,
-.step-2-container.visible,
-.step-3-container.visible
-.step-4container.visible{
-	display: flex;
-	flex-direction: row;
-	margin: 0;
-}
-
+/* === Navegação entre etapas === */
 .step-2-container #return {
-	display: flex;
-	justify-content: flex-start;
-	width: fit-content;
+  display: flex;
+  justify-content: flex-start;
+  width: fit-content;
 }
 
 .step-2-container #return:hover {
-	font-weight: bold;
+  font-weight: bold;
 }
 
-.basic-info-container {
-	display: flex;
-	flex-direction: column;
-	row-gap: 1rem;
-}
-
+/* === Animações visuais === */
 .hidden {
-	transform: translateX(-100%);
-	opacity: 0;
+  transform: translateX(-100%);
+  opacity: 0;
 }
 
 .visible {
-	transform: translateX(0);
-	opacity: 1;
+  transform: translateX(0);
+  opacity: 1;
 }
+
+/* === Campos básicos === */
+.basic-info-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+/* === Botões === */
+button.ant-btn-primary {
+  background-color: #7D0000 !important;
+  border-color: #7D0000 !important;
+  transition: background-color 0.3s ease;
+  padding: 1.5rem 0rem;
+}
+
+button.ant-btn-primary:hover,
+button.ant-btn-primary:focus {
+  background-color: rgba(125, 0, 0, 0.85) !important;
+  border-color: rgba(125, 0, 0, 0.85) !important;
+}
+
+.custom-steps.ant-steps.ant-steps-vertical >.ant-steps-item .ant-steps-item-content{
+  display: none;
+}
+
+.custom-steps.ant-steps .ant-steps-item-process .ant-steps-item-icon{
+  background-color: #7B0000; /* ou use a cor exata do seu botão */
+  border-color: #7B0000;
+}
+
 
 #btn-login {
   border: 1px solid #bb3301;
@@ -74,14 +113,70 @@ form {
   font-weight: bold;
 }
 
-.imagem-fundo img {
-	min-height: 100vh;
-	height: 100%;
-	position: fixed;
-	object-fit: cover;
-	object-position: left;
-	z-index: -1;
-	max-width: fit-content;
-	width: 100%;
+/* === Imagem de fundo === */
+.imagem-fundo {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
 }
 
+.imagem-fundo img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsividade extra para o componente Steps */
+.custom-steps .ant-steps-item-title {
+  display: none; /* Remove o texto */
+}
+
+
+
+.custom-steps .ant-steps-item-icon {
+  width: 32px;
+  height: 32px;
+  font-size: 16px;
+}
+
+/* === Responsivo === */
+@media (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 480px;
+    width: 100%;
+  }
+
+  .imagem-fundo {
+    margin: 0;
+    height: auto;
+    padding: 16px;
+  }
+
+  .imagem-fundo img {
+    width: 100%;
+    height: auto;
+  }
+
+	.form-container{
+		display:flex;
+		flex-direction:column;
+		align-items: flex-end;
+	}
+
+  .form-container .custom-steps{
+    width: 100%;
+    max-width: 400px;
+		margin:0;
+		display:flex;
+		flex-direction: row;
+  }
+
+}

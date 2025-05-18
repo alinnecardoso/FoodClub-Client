@@ -1,200 +1,195 @@
+import React, { useState } from 'react';
 import {
-	Button,
-	FormControl,
-	FormControlLabel,
-	FormLabel,
-	Radio,
-	RadioGroup,
-} from "@mui/material";
-import GenericInput from "./GenericInput";
-import React, { FormEvent, useState } from "react";
-import "./Register.css";
-import RestaurantRegister from "./RestaurantRegister";
-import CompanyRegister from "./CompanyRegister";
-import ArrowBack from "@mui/icons-material/ArrowBack";
-import logo from "../assets/Logo.svg";
-import EmailInput from "./EmailInput";
+  Form,
+  Input,
+  Radio,
+  Button,
+  Steps,
+  Typography,
+} from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import logo from '../assets/Logo.svg';
+
+const { Step } = Steps;
+const { Title } = Typography;
 
 interface FormData {
-	email: string;
-	password1: string;
-	password2: string;
-	role: string;
+  email: string;
+  password1: string;
+  password2: string;
+  role: string;
+  [key: string]: any;
 }
 
 const Register = () => {
-	const [step, setStep] = useState<number>(1);
-	const [role, setRole] = useState<string>("restaurante");
-	const [password1, setPassword1] = useState<string>("");
-	const [password2, setPassword2] = useState<string>("");
-	const [data, setData] = useState({});
-	const [isAnimating, setIsAnimating] = useState<boolean>(false);
-	const [error, setError] = useState<string | null>(null);
+  const [current, setCurrent] = useState(0);
+  const [role, setRole] = useState<string>('restaurante');
+  const [form] = Form.useForm();
 
-	function handleStep() {
-		if (step === 1) {
-			setIsAnimating(true);
-			setTimeout(() => {
-				setStep((prevStep) => prevStep + 1);
-				setIsAnimating(false);
-			}, 500);
-		} else {
-			setIsAnimating(true);
-			setTimeout(() => {
-				setStep((prevStep) => prevStep - 1);
-				setIsAnimating(false);
-			}, 500);
-		}
-	}
+  const next = () => setCurrent((prev) => prev + 1);
+  const prev = () => setCurrent((prev) => prev - 1);
 
-	function handleRoleChange(event: React.ChangeEvent<HTMLInputElement>) {
-		setRole(event.target.value);
-	}
+  const onFinish = (values: FormData) => {
+    console.log('Dados enviados:', values);
+    // Aqui você pode enviar ao backend ou prosseguir com lógica de cadastro
+  };
 
-	function handlePasswordChange(
-		setPassword: React.Dispatch<React.SetStateAction<string>>
-	) {
-		return (event: React.ChangeEvent<HTMLInputElement>) => {
-			const value = event.target.value.replace(/\s/g, ""); // Remove espaços
-			setPassword(value);
-		};
-	}
+  const steps = [
+    {
+      title: 'Informações de Acesso',
+      content: (
+        <>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              { required: true, message: 'Por favor, insira seu email' },
+              { type: 'email', message: 'Email inválido' },
+            ]}
+          >
+            <Input placeholder="Ex: sara@gmail.com" />
+          </Form.Item>
 
-	function handleSubmit(event: FormEvent<HTMLFormElement>): void {
-		event.preventDefault();
+          <Form.Item
+            label="Senha"
+            name="password1"
+            rules={[
+              { required: true, message: 'Digite sua senha' },
+              { min: 6, message: 'Mínimo de 6 caracteres' },
+            ]}
+            hasFeedback
+          >
+            <Input.Password placeholder="Digite sua senha" />
+          </Form.Item>
 
-		setError(null); // Limpa a mensagem de erro ao submeter
+          <Form.Item
+            label="Confirmar Senha"
+            name="password2"
+            dependencies={['password1']}
+            hasFeedback
+            rules={[
+              { required: true, message: 'Confirme sua senha' },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password1') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error('As senhas não conferem.'));
+                },
+              }),
+            ]}
+          >
+            <Input.Password placeholder="Digite novamente" />
+          </Form.Item>
 
-		const formData = new FormData(event.currentTarget);
-		const role = formData.get("row-radio-buttons-group") as string;
+          <Form.Item
+            name="role"
+            label="Você quer se cadastrar como"
+            rules={[{ required: true, message: 'Escolha uma opção' }]}
+          >
+            <Radio.Group
+              onChange={(e) => setRole(e.target.value)}
+              value={role}
+            >
+              <Radio value="restaurante">Restaurante</Radio>
+              <Radio value="empresa">Empresa</Radio>
+            </Radio.Group>
+          </Form.Item>
+        </>
+      ),
+    },
+    {
+      title: 'Dados da Conta',
+      content: (
+        <>
+          {role === 'restaurante' ? (
+            <>
+              <Form.Item
+                name="nomeRestaurante"
+                label="Nome do Restaurante"
+                rules={[{ required: true }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="tipoComida"
+                label="Tipo de Comida"
+                rules={[{ required: true }]}
+              >
+                <Input />
+              </Form.Item>
+            </>
+          ) : (
+            <>
+              <Form.Item
+                name="cnpj"
+                label="CNPJ"
+                rules={[{ required: true }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="razaoSocial"
+                label="Razão Social"
+                rules={[{ required: true }]}
+              >
+                <Input />
+              </Form.Item>
+            </>
+          )}
+        </>
+      ),
+    },
+    {
+      title: 'Confirmação',
+      content: <p>Revise os dados e clique em "Finalizar" para criar sua conta.</p>,
+    },
+  ];
 
-		// Verifica se a role foi selecionada
-		if (!role) {
-			setError("Por favor, selecione um tipo de cadastro.");
-			return;
-		}
+  return (
+    <div style={{ maxWidth: 500, margin: '0 auto', padding: 24 }}>
+      <div style={{ textAlign: 'center', marginBottom: 24 }}>
+        <img src={logo} alt="logo da empresa" style={{ width: 100 }} />
+        <Title level={3} style={{ marginTop: 16 }}>Cadastro</Title>
+      </div>
 
-		const password1 = formData.get("password1") as string;
-		const password2 = formData.get("password2") as string;
+      <Steps current={current} items={steps.map((item) => ({ title: item.title }))} style={{ marginBottom: 32 }} />
 
-		if (password1 !== password2) {
-			setError("As senhas não conferem.");
-			return;
-		}
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
+      >
+        {steps[current].content}
 
-		const newData: FormData = {
-			email: formData.get("email") as string,
-			password1: formData.get("password1") as string,
-			password2: formData.get("password2") as string,
-			role: formData.get("row-radio-buttons-group") as string,
-		};
+        <div style={{ marginTop: 24 }}>
+          {current > 0 && (
+            <Button onClick={prev} style={{ marginRight: 8 }} icon={<ArrowLeftOutlined />}>
+              Voltar
+            </Button>
+          )}
+          {current < steps.length - 1 && (
+            <Button type="primary" onClick={next}>
+              Próximo
+            </Button>
+          )}
+          {current === steps.length - 1 && (
+            <Button type="primary" htmlType="submit">
+              Finalizar
+            </Button>
+          )}
+        </div>
+      </Form>
 
-		setData(newData);
-		handleStep();
-	}
-
-	return (
-		<>
-			{step === 1 && (
-				<div className={`step-1-container ${isAnimating ? "hidden" : "visible"}`}>
-					<div className="logo">
-						<img src={logo} alt="logo da empresa" />
-					</div>
-					<form onSubmit={handleSubmit}>
-						<div className="basic-info-container">
-							<h1>Vamos criar sua conta</h1>
-							<EmailInput
-								name="email"
-								placeholder="Ex: sara@gmail.com"
-								labelText="Email"
-								required
-							/>
-							<GenericInput
-								minLength={6}
-								type="password"
-								placeholder="Digite a sua senha"
-								labelText="Digite a sua senha"
-								name="password1"
-								value={password1}
-								onChange={handlePasswordChange(setPassword1)}
-							/>
-							<GenericInput
-								minLength={6}
-								type="password"
-								placeholder="Digite a sua senha novamente"
-								labelText="Confirme a sua senha"
-								name="password2"
-								value={password2}
-								onChange={handlePasswordChange(setPassword2)}
-							/>
-
-							<div>
-								<div>
-									<FormControl>
-										<FormLabel id="demo-row-radio-buttons-group-label">
-											Você quer se cadastrar como
-										</FormLabel>
-										<RadioGroup
-											row
-											aria-labelledby="demo-row-radio-buttons-group-label"
-											name="row-radio-buttons-group"
-											onChange={handleRoleChange}
-										>
-											<FormControlLabel
-												value="restaurante"
-												control={<Radio />}
-												label="Restaurante"
-											/>
-											<FormControlLabel
-												value="empresa"
-												control={<Radio />}
-												label="Empresa"
-											/>
-										</RadioGroup>
-									</FormControl>
-									{error && <p style={{ color: "#D20000" }}>{error}</p>}{" "}
-									{/* Exibe a mensagem de erro */}
-								</div>
-							</div>
-							<Button variant="contained" color="primary" type="submit">
-								Continuar
-							</Button>
-						</div>
-						<Button href="/login" id="btn-login" variant="contained" color="inherit">
-							Retornar para o login
-						</Button>
-					</form>
-				</div>
-			)}
-
-			{step >= 2 && (
-				<>
-					<div className="container">
-						<Button id="return" onClick={handleStep} startIcon={<ArrowBack />}>
-							Voltar
-						</Button>
-						<div className={`step-2-container ${isAnimating ? "hidden" : "visible"}`}>
-							{role === "restaurante" ? (
-								<>
-									<div className="logo">
-										<img src={logo} alt="logo da empresa" />
-									</div>
-									<RestaurantRegister data={data} />
-								</>
-							) : (
-								<>
-									<div className="logo">
-										<img src={logo} alt="logo da empresa" />
-									</div>
-									<CompanyRegister data={data} />
-								</>
-							)}
-						</div>
-					</div>
-				</>
-			)}
-		</>
-	);
+      <Button
+        href="/login"
+        type="link"
+        style={{ marginTop: 16, display: 'block', textAlign: 'center' }}
+      >
+        Já tem uma conta? Fazer login
+      </Button>
+    </div>
+  );
 };
 
 export default Register;

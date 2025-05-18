@@ -1,16 +1,12 @@
-import {
-	Button,
-	FormControlLabel,
-	FormLabel,
-	Radio,
-	RadioGroup,
-} from "@mui/material";
 import { useEffect, useState } from "react";
+import { Button, Form, Typography } from "antd";
 import "./RegisterStepOne.css";
 import imgEmpresa from "../../../assets/empresa.png";
 import imgRestaurante from "../../../assets/restaurante.png";
 import { ICompanyRestaurant } from "../RegisterForm";
 import { IEmployee } from "../RegisterForm";
+
+const { Title, Text } = Typography;
 
 interface IRegisterStepOneProps {
 	formData: ICompanyRestaurant | IEmployee;
@@ -23,30 +19,23 @@ export const RegisterStepOne = ({
 	onStepChange,
 	onDataChange,
 }: IRegisterStepOneProps) => {
-	const [role, setRole] = useState<string>("");
+	const [role, setRole] = useState<string>(formData.role || "");
 	const [error, setError] = useState<string | null>(null);
 	const [data, setData] = useState<ICompanyRestaurant | IEmployee>(formData);
 
 	function goToNextStep() {
-		onStepChange(1); // Avançar
+		onStepChange(1);
 	}
-
-	/*
-    const goToPreviousStep = () => {
-    onStepChange(-1); // Retroceder
-    };
-  */
 
 	function handleDataChange() {
 		if (!role) {
 			setError("Por favor, selecione uma opção antes de prosseguir.");
 			return;
 		}
-		setError(null); // Limpa a mensagem de erro
+		setError(null);
 
 		let updatedData: ICompanyRestaurant | IEmployee;
 
-		// Verifica o tipo de dados e atualiza com o role selecionado
 		if (role === "restaurante" || role === "empresa") {
 			updatedData = {
 				email: formData.email || "",
@@ -77,16 +66,11 @@ export const RegisterStepOne = ({
 		}
 
 		setData(updatedData);
-		onDataChange(updatedData); // Notifica o componente pai
+		onDataChange(updatedData);
 		goToNextStep();
 	}
 
-	function handleRoleChange(event: React.ChangeEvent<HTMLInputElement>) {
-		setRole(event.target.value);
-	}
-
-	function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-		event.preventDefault(); // Evita o reload da página
+	function handleSubmit() {
 		handleDataChange();
 	}
 
@@ -94,74 +78,48 @@ export const RegisterStepOne = ({
 		console.log(data);
 	}, [data]);
 
+	const options = [
+		{ value: "empresa", label: "Empresa", img: imgEmpresa },
+		{ value: "restaurante", label: "Restaurante", img: imgRestaurante },
+	];
+
 	return (
 		<div className="step-1-container">
 			<div id="registerFormStepOne">
-				<form id="formChooseRole" onSubmit={handleSubmit}>
-					<div className="form-group">
+				<Form layout="vertical" onFinish={handleSubmit} className='RegisterForm' >
+					<div>
 						<div className="form-header">
-							<FormLabel id="demo-row-radio-buttons-group-label">
-								<h1>Você quer se cadastrar como</h1>
-								<span>Escolha o tipo desejado</span>
-							</FormLabel>
+							<Title level={3}>Você quer se cadastrar como</Title>
+							<Text type="secondary">Escolha o tipo desejado</Text>
 						</div>
 
-						<RadioGroup
-							onChange={handleRoleChange}
-							id="radio-group"
-							row
-							aria-labelledby="demo-row-radio-buttons-group-label"
-							name="row-radio-buttons-group"
-							value={role}
-						>
-							{[
-								{ value: "empresa", label: "Empresa", img: imgEmpresa },
-								{ value: "restaurante", label: "Restaurante", img: imgRestaurante },
-							].map(({ value, label, img }) => (
-								<FormControlLabel
-									key={value}
-									value={value}
-									control={
-										<Radio
-											className="radio"
-											icon={<img src={img} alt={`Ícone para ${label} não selecionado`} />}
-											checkedIcon={
-												<img
-													src={img}
-													alt={`Ícone para ${label} selecionado`}
-													style={{
-														filter: "brightness(1)",
-														transform: "scale(1.3)",
-														backgroundColor: "#f5d0d0b3",
-														padding: "5px",
-														borderRadius: "8px",
-														transition: "0.3s ease",
-													}}
-												/>
-											}
-										/>
-									}
-									label={value === role ? ` ${label}` : label}
-									sx={{
-										"& .MuiFormControlLabel-label": {
-											fontSize: "1.2rem",
-											fontWeight: value === role ? "bold" : "normal",
-											color: value === role ? "#7D0000" : "#000",
-											transition: "0.3s ease",
-										},
-									}}
-								/>
-							))}
-						</RadioGroup>
+						<Form.Item>
+							<div className="role-options">
+								{options.map(({ value, label, img }) => (
+									<div
+										key={value}
+										className={`card-option ${role === value ? "selected" : ""}`}
+										onClick={() => setRole(value)}
+									>
+										<img src={img} alt={label} />
+										<div>{label}</div>
+									</div>
+								))}
+							</div>
+						</Form.Item>
+
+						{error && <Text type="danger">{error}</Text>}
 					</div>
 
-					<div className="buttonGroup">
-						{error && <span style={{ color: "red" }}>{error}</span>}
-						<Button variant="contained" color="primary" type="submit">
+					
+					<div className="form-footer">
+						<Button type="primary" htmlType="submit" block>
 							Prosseguir
 						</Button>
 					</div>
-				</form>
+				</Form>
+
+				
 			</div>
 		</div>
 	);
