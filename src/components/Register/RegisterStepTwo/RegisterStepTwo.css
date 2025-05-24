@@ -1,18 +1,73 @@
-h1{
+h1 {
   font-size: 24px;
   margin-bottom: 1rem;
   color: #302F2F;
 }
 
-.input-label-group{
+.step-2-container .input-label-group {
   display: flex;
   flex-direction: column;
-  row-gap: 1rem;
-  height: 80vh;
+  width: 100%;
+  max-width: 400px;
+  gap: 0;
 }
 
-step-2-container.visible {
+.step-2-container .titleText{
+  margin-bottom: 2rem;
+}
+
+.step-2-container{
   display: flex;
-  flex-direction: row;
-  margin: 0;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  max-width: 480px;
+  width: 100%;
+  gap: 2rem;
+}
+
+.step-2-container.visible .basic-info-container {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  justify-content: space-between;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 0.5rem;
+  color: #302F2F;
+}
+
+.input-label-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.step-2-container.visible {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn-red {
+  background-color: #7c0000 !important;
+  border-color: #7c0000 !important;
+  color: #fff !important;
+  font-weight: 500;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.btn-red:hover,
+.btn-red:focus {
+  background-color: #5d0000 !important;
+  border-color: #5d0000 !important;
 }

@@ -9,12 +9,10 @@ body {
 .RegisterForm {
   display: flex;
   flex-direction: column;
-  min-height: 80vh;
 	max-width:400px;
 	width:100%;
   justify-content: space-between;
   align-items: stretch;
-	padding-top:2rem;
 }
 
 /* === Layout Principal === */
@@ -28,7 +26,8 @@ body {
 .form-container {
   background-color: #fff;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-  width: 480px;
+  width: 100%;
+  max-width: 480px;
   min-height: 100vh;
   padding: 32px 24px;
   box-sizing: border-box;
@@ -75,12 +74,7 @@ body {
   opacity: 1;
 }
 
-/* === Campos básicos === */
-.basic-info-container {
-  display: flex;
-  flex-direction: column;
-  row-gap: 1rem;
-}
+
 
 /* === Botões === */
 button.ant-btn-primary {
@@ -136,15 +130,56 @@ button.ant-btn-primary:focus {
   display: none; /* Remove o texto */
 }
 
-
-
-.custom-steps .ant-steps-item-icon {
-  width: 32px;
-  height: 32px;
-  font-size: 16px;
+/* Container geral dos steps */
+.custom-steps {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
 }
 
-/* === Responsivo === */
+/* Oculta o título padrão */
+.custom-steps .ant-steps-item-title {
+  display: none;
+}
+
+/* Círculos de todos os steps */
+.custom-steps .ant-steps-item-icon {
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Step atual */
+.custom-steps .ant-steps-item-process .ant-steps-item-icon {
+  background-color: #7B0000;
+  border-color: #7B0000;
+  color: white;
+}
+
+/* Steps futuros */
+.custom-steps .ant-steps-item-wait .ant-steps-item-icon {
+  background-color: #f0f0f0;
+  border-color: #dcdcdc;
+  color: #aaa;
+}
+
+.custom-steps.ant-steps.ant-steps-vertical >.ant-steps-item{
+  display: flex;
+  justify-content: space-around;
+}
+
+.custom-steps {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+
 @media (max-width: 768px) {
   .container {
     display: flex;
@@ -173,7 +208,7 @@ button.ant-btn-primary:focus {
 
   .form-container .custom-steps{
     width: 100%;
-    max-width: 400px;
+    max-width: 432px;
 		margin:0;
 		display:flex;
 		flex-direction: row;

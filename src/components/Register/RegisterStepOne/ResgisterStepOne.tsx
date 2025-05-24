@@ -114,7 +114,7 @@ export const RegisterStepOne = ({
 					
 					<div className="form-footer">
 						<Button type="primary" htmlType="submit" block>
-							Prosseguir
+							CONTINUAR
 						</Button>
 					</div>
 				</Form>

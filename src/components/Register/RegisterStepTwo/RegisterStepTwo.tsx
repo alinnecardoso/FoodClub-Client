@@ -1,11 +1,10 @@
-import { Button, FormHelperText, FormLabel } from "@mui/material";
-import EmailInput from "../../EmailInput";
-import GenericInput from "../../GenericInput";
+import { Button, Form, Input, Typography } from "antd";
 import { useState } from "react";
-import { ICompanyRestaurant } from "../RegisterForm";
-import { IEmployee } from "../RegisterForm";
+import { ICompanyRestaurant, IEmployee } from "../RegisterForm";
 import "./RegisterStepTwo.css";
 import { validateEmail } from "../../../utils/validateEmail";
+
+const { Title, Text } = Typography;
 
 interface IRegisterStepTwoProps {
 	formData: ICompanyRestaurant | IEmployee;
@@ -18,78 +17,37 @@ export const RegisterStepTwo = ({
 	onStepChange,
 	onDataChange,
 }: IRegisterStepTwoProps) => {
-	const [email, setEmail] = useState(formData.email);
-	const [password1, setPassword1] = useState(formData.password1);
-	const [password2, setPassword2] = useState(formData.password2);
+	const [form] = Form.useForm();
 	const [role] = useState(formData.role);
 	const [, setData] = useState<ICompanyRestaurant | IEmployee>(formData);
-	const [isAnimating] = useState<boolean>(false);
-	const [error, setError] = useState<string>("");
 
 	function goToNextStep() {
-		onStepChange(1); // Avançar
+		onStepChange(1);
 	}
 
-	/*
-        function goToPreviousStep(){
-            onStepChange(-1); // Retroceder
-        };
-    */
+	const handleSubmit = (values: any) => {
+		const { email, password1, password2 } = values;
 
-	function handleEmailChange(
-		setEmail: React.Dispatch<React.SetStateAction<string>>
-	) {
-		return (event: React.ChangeEvent<HTMLInputElement>) => {
-			const value = event.target.value; // Remove espaços
-			setEmail(value);
-		};
-	}
-
-	function handlePasswordChange(
-		setPassword: React.Dispatch<React.SetStateAction<string>>
-	) {
-		return (event: React.ChangeEvent<HTMLInputElement>) => {
-			const value = event.target.value.replace(/\s/g, ""); // Remove espaços
-			setPassword(value);
-		};
-	}
-
-	function handleDataChange() {
-		// Validação de campos obrigatórios
-		if (!email || !password1 || !password2) {
-			setError("Por favor, preencha todos os campos obrigatórios.");
-			return;
-		}
-
-		// Validação de e-mail
 		if (!validateEmail(email)) {
-			setError("E-mail inválido.");
+			form.setFields([{ name: "email", errors: ["E-mail inválido."] }]);
 			return;
 		}
 
-		// Validação de senhas
 		if (password1 !== password2) {
-			setError("As senhas não coincidem.");
+			form.setFields([{ name: "password2", errors: ["As senhas não coincidem."] }]);
 			return;
 		}
 
 		if (password1.length < 6) {
-			setError("A senha deve ter pelo menos 6 caracteres.");
+			form.setFields([{ name: "password1", errors: ["A senha deve ter pelo menos 6 caracteres."] }]);
 			return;
 		}
+
 		let updatedData: ICompanyRestaurant | IEmployee;
 
 		if (formData.role === "restaurante" || formData.role === "empresa") {
 			updatedData = {
-				name: formData.name || "",
-				cnpj: (formData as ICompanyRestaurant).cnpj || "",
-				cep: (formData as ICompanyRestaurant).cep || "",
-				street: (formData as ICompanyRestaurant).street || "",
-				city: (formData as ICompanyRestaurant).city || "",
-				state: (formData as ICompanyRestaurant).state || "",
-				complement: (formData as ICompanyRestaurant).complement || "",
-				number: (formData as ICompanyRestaurant).number || "",
-				role: (formData as ICompanyRestaurant).role,
+				...(formData as ICompanyRestaurant),
 				email,
 				password1,
 				password2,
@@ -97,10 +55,7 @@ export const RegisterStepTwo = ({
 			};
 		} else {
 			updatedData = {
-				name: formData.name || "",
-				birthday: (formData as IEmployee).birthday || "",
-				company: (formData as IEmployee).company || "",
-				role: (formData as IEmployee).role,
+				...(formData as IEmployee),
 				email,
 				password1,
 				password2,
@@ -109,77 +64,80 @@ export const RegisterStepTwo = ({
 		}
 
 		setData(updatedData);
-		onDataChange(updatedData); // Notifica o componente pai
+		onDataChange(updatedData);
 		console.log(updatedData);
 		goToNextStep();
-	}
-
-	function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-		event.preventDefault(); // Evita o reload da página
-		handleDataChange();
-	}
+	};
 
 	return (
-		<div className={`step-2-container ${isAnimating ? "hidden" : "visible"}`}>
-			{/*
-                <Button id="return" startIcon={<ArrowBack />} onClick={goToPreviousStep}>
-                    Voltar
-                </Button>
-            */}
-
-			<form onSubmit={handleSubmit} noValidate>
+		<div className={`step-2-container visible`}>
+			<Form
+				form={form}
+				layout="vertical"
+				onFinish={handleSubmit}
+				requiredMark={false}
+				className="RegisterForm"
+			>
 				<div className="basic-info-container">
 					<div className="input-label-group">
-						<FormLabel id="demo-row-radio-buttons-group-label">
-							<h1>{role.charAt(0).toUpperCase() + role.slice(1)}</h1>
-							<span>Informações da conta</span>
-						</FormLabel>
+						<div className="titleText">
+							<Title level={3}>{role.charAt(0).toUpperCase() + role.slice(1)}</Title>
+							<Text type="secondary">Informações da conta</Text>
+						</div>
 
-						<EmailInput
+						<Form.Item
+							label="Email"
 							name="email"
-							placeholder="Ex: sara@gmail.com"
-							labelText="Email"
-							required
-							value={email}
-							onChange={handleEmailChange(setEmail)}
-						/>
+							hasFeedback
+							rules={[
+								{ required: true, message: "Por favor, insira seu email." },
+								{ type: "email", message: "Formato de email inválido." },
+							]}
+						>
+							<Input placeholder="Ex: sara@gmail.com" />
+						</Form.Item>
 
-						<GenericInput
-							minLength={6}
-							type="password"
-							placeholder="Digite a sua senha"
-							labelText="Digite a sua senha"
+						<Form.Item
+							label="Digite a sua senha"
 							name="password1"
-							value={password1}
-							onChange={handlePasswordChange(setPassword1)}
-						/>
-						<GenericInput
-							minLength={6}
-							type="password"
-							placeholder="Digite a sua senha novamente"
-							labelText="Confirme a sua senha"
-							name="password2"
-							value={password2}
-							onChange={handlePasswordChange(setPassword2)}
-						/>
-						{error && error.includes("senha") && (
-							<FormHelperText error>{error}</FormHelperText>
-						)}
-					</div>
+							hasFeedback
+							rules={[
+								{ required: true, message: "Por favor, insira sua senha." },
+								{ min: 6, message: "A senha deve ter pelo menos 6 caracteres." },
+							]}
+						>
+							<Input.Password placeholder="Digite a sua senha" />
+						</Form.Item>
 
-					{error && error.includes("obrigatórios") && (
-						<FormHelperText error>{error}</FormHelperText>
-					)}
-					<Button variant="contained" color="primary" type="submit">
-						Continuar
-					</Button>
+						<Form.Item
+							label="Confirme a sua senha"
+							name="password2"
+							dependencies={["password1"]}
+							hasFeedback
+							rules={[
+								{ required: true, message: "Confirme sua senha." },
+								({ getFieldValue }) => ({
+									validator(_, value) {
+										if (!value || getFieldValue("password1") === value) {
+											return Promise.resolve();
+										}
+										return Promise.reject(new Error("As senhas não coincidem."));
+									},
+								}),
+							]}
+						>
+							<Input.Password placeholder="Digite a sua senha novamente" />
+						</Form.Item>
+
+						
+					</div>
+					<Form.Item style={{ marginTop: "2rem" }}>
+						<Button type="primary" htmlType="submit" block className="btn-red">
+							CONTINUAR
+						</Button>
+					</Form.Item>
 				</div>
-				{/*
-                    <Button href="/login" id="btn-login" variant="contained" color="inherit">
-                        Retornar para o login
-                    </Button>
-                */}
-			</form>
+			</Form>
 		</div>
 	);
 };
