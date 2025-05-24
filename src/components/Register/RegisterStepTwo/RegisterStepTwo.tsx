@@ -12,6 +12,13 @@ interface IRegisterStepTwoProps {
 	onDataChange: (updatedData: ICompanyRestaurant | IEmployee) => void;
 }
 
+type FormValues = {
+  email: string;
+  password1: string;
+  password2: string;
+};
+
+
 export const RegisterStepTwo = ({
 	formData,
 	onStepChange,
@@ -25,7 +32,7 @@ export const RegisterStepTwo = ({
 		onStepChange(1);
 	}
 
-	const handleSubmit = (values: any) => {
+	const handleSubmit = (values: FormValues) => {
 		const { email, password1, password2 } = values;
 
 		if (!validateEmail(email)) {
