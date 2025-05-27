@@ -20,12 +20,13 @@ const Refeicoes = () => {
 
 	useEffect(() => {
 		getRestaurant(user?._id.toString());
-	}, []);
+	}, [user?._id]);
 
 	const handleSubmit = () => {
 		form.submit();
 
 	};
+
 
 	const handleCancel = () => {
 		form.resetFields();
@@ -44,6 +45,7 @@ const Refeicoes = () => {
 							labelText="Nome do prato"
 							name="name"
 							minLength={5}
+					
 						/>
 
 						<GenericInputAnt

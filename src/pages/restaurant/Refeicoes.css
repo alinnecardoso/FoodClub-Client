@@ -1,3 +1,9 @@
+.refeicoes-container {
+	padding: 2rem;
+}
+
+
+
 .refeicoes-container .cards-container {
 	display: flex;
 	row-gap: 15px;

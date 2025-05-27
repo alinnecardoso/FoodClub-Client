@@ -1,11 +1,6 @@
-.refeicoes-container {
-	padding: 60px 10px 0px 10px;
-}
-
 .header-pratos-container {
 	display: flex;
 	justify-content: space-between;
-	margin-bottom: 20px;
 	color: black;
 }
 
@@ -13,7 +8,6 @@
 	display: flex;
 	flex-direction: column;
 	row-gap: 15px;
-	width: 100vw;
 }
 
 .refeicao-card-container {

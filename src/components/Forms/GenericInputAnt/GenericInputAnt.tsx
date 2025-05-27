@@ -10,6 +10,7 @@ interface GenericInputProps {
   minLength?: number;
   maxLength?: number;
   disabled?: boolean;
+  initialValue?: string | number; // nova prop opcional
 }
 
 const GenericInputAnt = ({
@@ -20,6 +21,7 @@ const GenericInputAnt = ({
   minLength,
   maxLength,
   disabled,
+  initialValue,
 }: GenericInputProps) => {
   const [touched, setTouched] = useState(false);
 
@@ -34,7 +36,12 @@ const GenericInputAnt = ({
   };
 
   const inputComponent = isNumber ? (
-    <InputNumber style={{ width: "100%" }} {...commonProps} />
+    <InputNumber
+      style={{ width: "100%" }}
+      precision={2}
+      step={1}
+      {...commonProps}
+    />
   ) : (
     <Input type={type} allowClear {...commonProps} />
   );
@@ -47,6 +54,18 @@ const GenericInputAnt = ({
     ...(maxLength
       ? [{ max: maxLength, message: `${labelText} deve ter no máximo ${maxLength} caracteres.` }]
       : []),
+    ...(isNumber
+      ? [
+          {
+            validator: (_, value) => {
+              if (value === 0) {
+                return Promise.reject(new Error(`${labelText} deve ser maior que zero.`));
+              }
+              return Promise.resolve();
+            },
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -55,9 +74,10 @@ const GenericInputAnt = ({
       label={labelText}
       name={name}
       rules={rules}
-      validateTrigger={touched ? "onChange" : "onBlur"} // chave da lógica
+      validateTrigger={touched ? "onChange" : "onBlur"}
       hasFeedback
       style={{ marginBottom: 0 }}
+      initialValue={initialValue} // valor inicial opcional
     >
       {inputComponent}
     </Form.Item>

@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Rating } from "@mui/material";
 import "./RefeicaoCard.css";
 import { IDish } from "../../interfaces/dish";
 import BasicModal from "../modal/BasicModal";
+import GenericInputAnt from "../Forms/GenericInputAnt/GenericInputAnt";
+import { Form } from "antd";
 
 const mediaRatings = (ratings: { userId: string; rating: number }[]) => {
 	let sum = 0;
@@ -14,9 +16,21 @@ const mediaRatings = (ratings: { userId: string; rating: number }[]) => {
 
 const RefeicaoCard = (props: IDish) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [form] = Form.useForm();
 
-	const handleOpenModal = () => setIsModalOpen(true);
-	const handleCloseModal = () => setIsModalOpen(false);
+	const handleOpenModal = () => {
+		form.setFieldsValue({
+			description: props.description,
+			name: props.name,
+			price: props.price,
+			image: props.image,
+		});
+		setIsModalOpen(true);
+	};
+
+	const handleCloseModal = () => {
+		setIsModalOpen(false);
+	};
 
 	return (
 		<>
@@ -51,8 +65,44 @@ const RefeicaoCard = (props: IDish) => {
 				isOpen={isModalOpen}
 				handleOk={handleCloseModal}
 				handleCancel={handleCloseModal}
+				titleText="Editar prato"
 			>
-				<h1>eai</h1>
+				<Form form={form} layout="vertical">
+					<img src= { props.image ? props.image: ''} alt="" style={{ height: '120px', margin: '0 auto', borderRadius: '8px'	}} />
+					<GenericInputAnt
+						type="text"
+						placeholder="Nome do prato"
+						labelText="Nome"
+						name="name"
+						maxLength={40}
+						minLength={3}
+					/>
+
+					<GenericInputAnt
+						type="text"
+						placeholder="Descrição do prato"
+						labelText="Descrição"
+						name="description"
+						maxLength={70}
+						minLength={5}
+					/>
+
+					<GenericInputAnt
+						type="text"
+						placeholder="Imagem do prato"
+						labelText="Imagem"
+						name="image"
+						maxLength={300}
+						minLength={5}
+					/>
+
+					<GenericInputAnt
+						type="number"
+						placeholder="Preço"
+						labelText="Preço"
+						name="price"
+					/>
+				</Form>
 			</BasicModal>
 		</>
 	);
