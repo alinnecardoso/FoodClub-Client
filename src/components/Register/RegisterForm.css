@@ -100,12 +100,12 @@ button.ant-btn-primary:focus {
 }
 
 
-#btn-login {
+/*#btn-login {
   border: 1px solid #bb3301;
   background: #fff;
   color: #bb3301;
   font-weight: bold;
-}
+}*/
 
 /* === Imagem de fundo === */
 .imagem-fundo {

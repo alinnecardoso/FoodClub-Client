@@ -19,7 +19,7 @@ export const RegisterStepOne = ({
 	onStepChange,
 	onDataChange,
 }: IRegisterStepOneProps) => {
-	const [role, setRole] = useState<string>(formData.role || "");
+	const [userType, setUserType] = useState<string>(formData.userType || "");
 	const [error, setError] = useState<string | null>(null);
 	const [data, setData] = useState<ICompanyRestaurant | IEmployee>(formData);
 
@@ -28,7 +28,7 @@ export const RegisterStepOne = ({
 	}
 
 	function handleDataChange() {
-		if (!role) {
+		if (!userType) {
 			setError("Por favor, selecione uma opção antes de prosseguir.");
 			return;
 		}
@@ -36,7 +36,7 @@ export const RegisterStepOne = ({
 
 		let updatedData: ICompanyRestaurant | IEmployee;
 
-		if (role === "restaurante" || role === "empresa") {
+		if (userType === "restaurant" || userType === "company") {
 			updatedData = {
 				email: formData.email || "",
 				password1: formData.password1 || "",
@@ -49,7 +49,7 @@ export const RegisterStepOne = ({
 				state: (formData as ICompanyRestaurant).state || "",
 				complement: (formData as ICompanyRestaurant).complement || "",
 				number: (formData as ICompanyRestaurant).number || "",
-				role,
+				userType,
 				image: "",
 			};
 		} else {
@@ -60,7 +60,7 @@ export const RegisterStepOne = ({
 				name: formData.name || "",
 				birthday: (formData as IEmployee).birthday || "",
 				company: (formData as IEmployee).company || "",
-				role,
+				userType,
 				image: "",
 			};
 		}
@@ -79,8 +79,8 @@ export const RegisterStepOne = ({
 	}, [data]);
 
 	const options = [
-		{ value: "empresa", label: "Empresa", img: imgEmpresa },
-		{ value: "restaurante", label: "Restaurante", img: imgRestaurante },
+		{ value: "company", label: "Empresa", img: imgEmpresa },
+		{ value: "restaurant", label: "Restaurante", img: imgRestaurante },
 	];
 
 	return (
@@ -94,12 +94,12 @@ export const RegisterStepOne = ({
 						</div>
 
 						<Form.Item>
-							<div className="role-options">
+							<div className="userType-options">
 								{options.map(({ value, label, img }) => (
 									<div
 										key={value}
-										className={`card-option ${role === value ? "selected" : ""}`}
-										onClick={() => setRole(value)}
+										className={`card-option ${userType === value ? "selected" : ""}`}
+										onClick={() => setUserType(value)}
 									>
 										<img src={img} alt={label} />
 										<div>{label}</div>

@@ -18,14 +18,17 @@ type FormValues = {
   password2: string;
 };
 
-
+const userTypeLabelMap: { [key: string]: string } = {
+	company: 'Empresa',
+	restaurant: 'Restaurante'
+};
 export const RegisterStepTwo = ({
 	formData,
 	onStepChange,
 	onDataChange,
 }: IRegisterStepTwoProps) => {
 	const [form] = Form.useForm();
-	const [role] = useState(formData.role);
+	const [userType] = useState(formData.userType);
 	const [, setData] = useState<ICompanyRestaurant | IEmployee>(formData);
 
 	function goToNextStep() {
@@ -52,7 +55,7 @@ export const RegisterStepTwo = ({
 
 		let updatedData: ICompanyRestaurant | IEmployee;
 
-		if (formData.role === "restaurante" || formData.role === "empresa") {
+		if (formData.userType === "restaurante" || formData.userType === "empresa") {
 			updatedData = {
 				...(formData as ICompanyRestaurant),
 				email,
@@ -88,7 +91,9 @@ export const RegisterStepTwo = ({
 				<div className="basic-info-container">
 					<div className="input-label-group">
 						<div className="titleText">
-							<Title level={3}>{role.charAt(0).toUpperCase() + role.slice(1)}</Title>
+							<Title level={3}>
+								{userTypeLabelMap[formData.userType] || ''}
+							</Title>
 							<Text type="secondary">Informações da conta</Text>
 						</div>
 

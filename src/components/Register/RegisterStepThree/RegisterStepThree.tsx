@@ -4,20 +4,20 @@ import { RegisterRestaurantCompany } from "./RegisterRestaurantCompany/Resgister
 import { RegisterEmployee } from "./RegisterEmployee/RegisterEmployee";
 import './RegisterStepThree.css'
 
-export interface IRegisterStepThreeProps {
+export interface IRegisterStepProps {
   formData: ICompanyRestaurant | IEmployee;
   onStepChange: (delta:number) => void;
   onDataChange: (updatedData: ICompanyRestaurant | IEmployee) => void;
 }
 
-export const RegisterStepThree = ({ formData, onStepChange, onDataChange }: IRegisterStepThreeProps) => {
+export const RegisterStepThree = ({ formData, onStepChange, onDataChange }: IRegisterStepProps) => {
   const [isAnimating, ] = useState<boolean>(false);
-  const [ role, ] = useState<string>(formData.role);
+  const [ userType, ] = useState<string>(formData.userType);
 
   return (
     <div className={`step-3-container ${isAnimating ? "hidden" : "visible"}`} >
 
-      {(role === 'restaurante' || role === 'empresa') && (
+      {(userType === 'restaurant' || userType === 'company') && (
         <RegisterRestaurantCompany 
           formData={formData} 
           onStepChange={onStepChange}
@@ -25,7 +25,7 @@ export const RegisterStepThree = ({ formData, onStepChange, onDataChange }: IReg
         />
       )}
 
-      {role === 'colaborador' && (
+      {userType === 'colaborador' && (
         <RegisterEmployee 
           formData={formData} 
           onStepChange={onStepChange}

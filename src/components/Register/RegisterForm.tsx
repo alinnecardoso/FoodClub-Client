@@ -15,7 +15,7 @@ interface IProps {
 }
 
 export interface IEmployee {
-  role: string;
+  userType: string;
   email: string;
   password1: string;
   password2: string;
@@ -26,7 +26,7 @@ export interface IEmployee {
 }
 
 export interface ICompanyRestaurant {
-  role: string;
+  userType: string;
   email: string;
   password1: string;
   password2: string;
@@ -47,7 +47,7 @@ const RegisterForm = ({ screenSize }: IProps) => {
 
   const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState<ICompanyRestaurant | IEmployee>({
-    role: "",
+    userType: "",
     email: "",
     password1: "",
     password2: "",
@@ -67,7 +67,7 @@ const RegisterForm = ({ screenSize }: IProps) => {
   async function handleStepChange(delta: number) {
     setStep((prevStep) => prevStep + delta);
 
-    if (step === 3) {
+    if (step === 5) {
       const updatedBusinessDTO = {
         name: formData.name,
         cnpj: (formData as ICompanyRestaurant).cnpj,
@@ -76,7 +76,7 @@ const RegisterForm = ({ screenSize }: IProps) => {
         image: (formData as ICompanyRestaurant).image,
         email: formData.email,
         password: formData.password1,
-        userType: formData.role,
+        userType: formData.userType,
         verificationToken: businessDTO.verificationToken,
         verificationTokenExpireAt: businessDTO.verificationTokenExpireAt,
       };
