@@ -5,12 +5,11 @@ import "./PratoForm.css";
 const PratoForm = () => {
 	const { dishDTO, updateDishDTO } = useRestaurantStore();
 
-	// Função para lidar com as alterações de input
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		updateDishDTO({
-			...dishDTO, // Mantém o restante dos campos
-			[name]: value, // Atualiza o campo específico
+			...dishDTO,
+			[name]: value,
 		});
 	};
 

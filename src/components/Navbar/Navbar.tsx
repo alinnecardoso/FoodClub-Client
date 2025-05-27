@@ -8,21 +8,19 @@ const Navbar = () => {
 	const navigate = useNavigate();
 
 	if (user) {
-		// Filtra os ícones com base no tipo de usuário
+
 		const filteredIcons = navIconsList.filter((icon) =>
 			icon.iconFor.includes(user.userType)
 		);
 
-		// Define o handleClick para lidar com a navegação e o logout
 		const handleClick = (
 			e: React.MouseEvent<HTMLAnchorElement>,
 			label: string,
 			link: string
 		) => {
 			if (label === "Sair") {
-				e.preventDefault(); // Impede a navegação para "/login"
-				logout(); // Chama o método de logout
-				navigate(link); // Redireciona para a página de login
+				e.preventDefault();
+				navigate(link);
 			}
 		};
 
@@ -44,7 +42,7 @@ const Navbar = () => {
 		);
 	}
 
-	return null; // Se não houver usuário, o Navbar não é exibido
+	return null;
 };
 
 export default Navbar;

@@ -3,46 +3,79 @@ import RefeicaoCard from "../../components/RefeicaoCard/RefeicaoCard";
 import { IRestaurant } from "../../interfaces/restaurant";
 import { useAuthStore } from "../../stores/authStores";
 import "./Refeicoes.css";
-import FormDialog from "../../components/Dialog";
-import PratoForm from "../../components/PratoForm/PratoForm";
 import { useRestaurantStore } from "../../stores/restaurantStore";
 import { useEffect } from "react";
+import GenericForm from "../../components/Forms/GenericForm/GenericForm";
+import GenericInputAnt from "../../components/Forms/GenericInputAnt/GenericInputAnt";
+import BasicModalButton from "../../components/Forms/Modal/BasicModalButton";
+import { Form } from "antd";
 
 const Refeicoes = () => {
 	let { user } = useAuthStore();
 	user = user as IRestaurant;
+	const [form] = Form.useForm();
 
 	const { dishDTO, createDish, restaurant, getRestaurant } =
 		useRestaurantStore();
 
 	useEffect(() => {
 		getRestaurant(user?._id.toString());
-	}, []);
+	}, [user?._id]);
 
 	const handleSubmit = () => {
-		if (
-			dishDTO.name != "" &&
-			dishDTO.description != "" &&
-			dishDTO.price != 0 &&
-			dishDTO.image != ""
-		) {
-			dishDTO.restaurantId = user._id;
-			createDish(dishDTO);
-		}
+		form.submit();
+
 	};
+
+
+	const handleCancel = () => {
+		form.resetFields();
+	}
+
 
 	return (
 		<div className="refeicoes-container">
 			<div className="header-pratos-container">
 				<h1>Pratos</h1>
-				<FormDialog
-					buttonText="Novo Prato"
-					titleText="Novo Prato"
-					onConfirm={handleSubmit}
-				>
-					<PratoForm />
-				</FormDialog>
+				<BasicModalButton title="Adicionar prato" buttonText="Adicionar" handleCancel={() => handleCancel()} handleOk={() => handleSubmit()}  >
+					<GenericForm onFinish={handleSubmit} form={form} >
+						<GenericInputAnt
+							type="text"
+							placeholder="Nome"
+							labelText="Nome do prato"
+							name="name"
+							minLength={5}
+					
+						/>
+
+						<GenericInputAnt
+							type="number"
+							placeholder="ex: 5.00"
+							labelText="Preço"
+							name="price"
+						/>
+
+						<GenericInputAnt
+							type="text"
+							placeholder="Digite o link da imagem"
+							labelText="Imagem"
+							name="image"
+							minLength={5}
+						/>
+
+						<GenericInputAnt
+							type="text"
+							placeholder="Descrição do prato"
+							labelText="Descrição"
+							name="description"
+							maxLength={70}
+							minLength={5}
+						/>
+
+					</GenericForm>
+				</BasicModalButton>
 			</div>
+
 			<div className="cards-container">
 				{restaurant?.dishes.map((dish) => (
 					<RefeicaoCard
