@@ -1,3 +1,4 @@
+
 export const howItWorkCardsInfo = [
 	{
 		iconAddress: "/assets/how-it-work-company-icon.png",
@@ -132,4 +133,11 @@ export const employeesFoto = [
 	{
 		img12: "../assets/img-employee/image 20.png",
 	},
+];
+
+export const avatarOptions = [
+	{ key: "avatar1", image: 'src/assets/img-companyRestaurant/img01.svg' },
+	{ key: "avatar2", image: 'src/assets/img-companyRestaurant/img02.svg' },
+	{ key: "avatar3", image: 'src/assets/img-companyRestaurant/img03.svg' },
+	{ key: "avatar4", image: 'src/assets/img-companyRestaurant/img04.svg' },
 ];

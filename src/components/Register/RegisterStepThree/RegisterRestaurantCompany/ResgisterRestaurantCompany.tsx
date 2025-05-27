@@ -1,232 +1,195 @@
 import { useState, useCallback } from "react";
-import { IRegisterStepThreeProps } from "../RegisterStepThree";
-import { Button, FormLabel } from "@mui/material";
-import GenericInput from "../../../GenericInput";
+import {
+  Form,
+  Input,
+  Row,
+  Col,
+  Button,
+  Typography,
+  message
+} from "antd";
+import { IRegisterStepProps } from "../RegisterStepThree";
 import { ICompanyRestaurant } from "../../RegisterForm";
 import { fetchAddressByCep } from "../../../../utils/apiCEP";
-import { formatCEP } from "../../../../utils/isValidCEP";
-import { formatCNPJ } from "../../../../utils/isValidCNPJ";
+import { formatCEP, isValidCEP } from "../../../../utils/isValidCEP";
+import { formatCNPJ, isValidCNPJ } from "../../../../utils/isValidCNPJ";
 
-// Função debounce para limitar requisições
+const { Title, Text } = Typography;
+
 const debounce = (func: (...args: any[]) => void, delay: number) => {
-	let timeoutId: NodeJS.Timeout;
-	return (...args: any[]) => {
-		clearTimeout(timeoutId);
-		timeoutId = setTimeout(() => {
-			func(...args);
-		}, delay);
-	};
+  let timeoutId: NodeJS.Timeout;
+  return (...args: any[]) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(...args), delay);
+  };
 };
 
 export const RegisterRestaurantCompany = ({
-	formData,
-	onStepChange,
-	onDataChange,
-}: IRegisterStepThreeProps) => {
-	const [formState, setFormState] = useState<ICompanyRestaurant>({
-		...formData,
-		cnpj: (formData as ICompanyRestaurant).cnpj || "",
-		cep: (formData as ICompanyRestaurant).cep || "",
-		street: (formData as ICompanyRestaurant).street || "",
-		city: (formData as ICompanyRestaurant).city || "",
-		state: (formData as ICompanyRestaurant).state || "",
-		complement: (formData as ICompanyRestaurant).complement || "",
-		number: (formData as ICompanyRestaurant).number || "",
-		role: (formData as ICompanyRestaurant).role || "",
-		image: (formData as ICompanyRestaurant).image || "",
-	});
+  formData,
+  onStepChange,
+  onDataChange,
+}: IRegisterStepProps) => {
+  const [form] = Form.useForm();
+  const [formState, setFormState] = useState<ICompanyRestaurant>({
+    ...formData,
+    cnpj: (formData as ICompanyRestaurant).cnpj || "",
+    cep: (formData as ICompanyRestaurant).cep || "",
+    street: (formData as ICompanyRestaurant).street || "",
+    city: (formData as ICompanyRestaurant).city || "",
+    state: (formData as ICompanyRestaurant).state || "",
+    complement: (formData as ICompanyRestaurant).complement || "",
+    number: (formData as ICompanyRestaurant).number || "",
+    userType: (formData as ICompanyRestaurant).userType || "",
+    image: (formData as ICompanyRestaurant).image || "",
+  });
 
-	const [isLoadingCep, setIsLoadingCep] = useState(false);
-	const [formattedCNPJ, setFormattedCNPJ] = useState<string>("");
-	const [formattedCEP, setFormattedCEP] = useState<string>("");
+  const [isLoadingCep, setIsLoadingCep] = useState(false);
 
-	// Função debounce para limitar requisições
-	//const debouncedFetchAddress = useCallback(debounce(fetchAddress, 500), []);
+  const userTypeLabelMap: { [key: string]: string } = {
+    company: 'Empresa',
+    restaurant: 'Restaurante'
+  };
 
-	function goToNextStep() {
-		onStepChange(1); // Avançar
-	}
+  const debouncedFetchAddress = useCallback(
+    debounce(async (cep: string) => {
+      setIsLoadingCep(true);
+      try {
+        const address = await fetchAddressByCep(cep);
+        if (address) {
+          setFormState((prev) => {
+            const updated = {
+              ...prev,
+              street: address.logradouro,
+              city: address.localidade,
+              state: address.uf,
+            };
+            onDataChange(updated);
+            form.setFieldsValue(updated);
+            return updated;
+          });
+        }
+      } catch {
+        message.error("Erro ao buscar o CEP.");
+      } finally {
+        setIsLoadingCep(false);
+      }
+    }, 500),
+    [onDataChange, form]
+  );
 
-	function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-		const { name, value } = e.target;
-		setFormState((prevState) => ({
-			...prevState,
-			[name]: value,
-		}));
-	}
+  const handleFieldChange = (field: string, value: string) => {
+    setFormState((prev) => ({ ...prev, [field]: value }));
+  };
 
-	// Função debounce para fetchAddress
-	const debouncedFetchAddress = useCallback(
-		debounce(async (cep: string) => {
-			setIsLoadingCep(true);
-			try {
-				const address = await fetchAddressByCep(cep);
-				if (address) {
-					setFormState((prevState) => ({
-						...prevState,
-						street: address.logradouro,
-						city: address.localidade,
-						state: address.uf,
-					}));
-					onDataChange({
-						...formState,
-						street: address.logradouro,
-						city: address.localidade,
-						state: address.uf,
-					});
-				}
-			} catch (error) {
-				console.error("Erro ao buscar o CEP:", error);
-			} finally {
-				setIsLoadingCep(false);
-			}
-		}, 500),
-		[formState, onDataChange]
-	);
+  const handleCNPJChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D/g, "").slice(0, 14);
+    const masked = formatCNPJ(raw);
+    form.setFieldsValue({ cnpj: masked });
+    handleFieldChange("cnpj", raw);
+  };
 
-	function handleCepChange(e: React.ChangeEvent<HTMLInputElement>) {
-		const cep = e.target.value.replace(/\D/g, ""); // Remove caracteres não numéricos
-		setFormattedCEP(formatCEP(cep));
-		setFormState((prevState) => ({ ...prevState, cep }));
+  const handleCEPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D/g, "").slice(0, 8);
+    const masked = formatCEP(raw);
+    form.setFieldsValue({ cep: masked });
+    handleFieldChange("cep", raw);
+    if (raw.length === 8) debouncedFetchAddress(raw);
+  };
 
-		if (cep.length === 8) {
-			debouncedFetchAddress(cep); // Executa a busca com debounce
-		}
-	}
+  const handleSubmit = () => {
+    const updatedData: ICompanyRestaurant = { ...formState };
+    if (!isValidCNPJ(formatCNPJ(updatedData.cnpj))) {
+      message.error("CNPJ inválido.");
+      return;
+    }
+    if (!isValidCEP(formatCEP(updatedData.cep))) {
+      message.error("CEP inválido.");
+      return;
+    }
+    onDataChange(updatedData);
+    console.log(updatedData)
+    onStepChange(1);
+  };
 
-	function handleCNPJChange(event: React.ChangeEvent<HTMLInputElement>) {
-		const value = event.target.value;
-		setFormattedCNPJ(formatCNPJ(value));
-		setFormState((prevState) => ({
-			...prevState,
-			cnpj: value,
-		}));
-	}
+  return (
+    <Form
+      form={form}
+      layout="vertical"
+      onFinish={handleSubmit}
+      initialValues={{
+        ...formState,
+        cnpj: formatCNPJ(formState.cnpj),
+        cep: formatCEP(formState.cep),
+      }}
+    >
+      <Title level={3}>
+        {userTypeLabelMap[formState.userType] || ''}
+      </Title>
 
-	function handleDataChange() {
-		const updatedData: ICompanyRestaurant = {
-			...formState,
-		};
+      <Text type="secondary">
+        Informações da {userTypeLabelMap[formState.userType] || ''}
+      </Text>
 
-		setFormState(updatedData);
-		onDataChange(updatedData); // Notifica o componente pai
-		console.log(updatedData);
-		goToNextStep();
-	}
+      <Form.Item name="name" label="Nome" rules={[{ required: true }]} hasFeedback>
+        <Input onChange={(e) => handleFieldChange("name", e.target.value)} />
+      </Form.Item>
 
-	function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-		event.preventDefault(); // Evita o reload da página
-		handleDataChange();
-	}
+      <Form.Item name="cnpj" label="CNPJ" rules={[
+        { required: true },
+        {
+          validator: (_, value) => isValidCNPJ(value) ? Promise.resolve() : Promise.reject("CNPJ inválido.")
+        }
+      ]} hasFeedback>
+        <Input onChange={handleCNPJChange} maxLength={18} placeholder="00.000.000/0000-00" />
+      </Form.Item>
 
-	return (
-		<form onSubmit={handleSubmit}>
-			<div className="basic-info-container">
-				<div className="input-label-group">
-					<FormLabel id="demo-row-radio-buttons-group-label">
-						<h1>
-							{formState.role.charAt(0).toUpperCase() + formState.role.slice(1)}
-						</h1>
-						<span>Informações da {formState.role}</span>
-					</FormLabel>
+      <Form.Item name="cep" label="CEP" rules={[
+        { required: true },
+        {
+          validator: (_, value) => isValidCEP(value) ? Promise.resolve() : Promise.reject("CEP inválido.")
+        }
+      ]} hasFeedback>
+        <Input onChange={handleCEPChange} maxLength={9} placeholder="00000-000" />
+      </Form.Item>
 
-					<GenericInput
-						type="text"
-						placeholder="Nome"
-						labelText="Nome"
-						name="name"
-						value={formState.name}
-						onChange={handleInputChange}
-					/>
+      <Form.Item name="street" label="Rua" hasFeedback>
+        <Input disabled={!!formState.street || isLoadingCep} onChange={(e) => handleFieldChange("street", e.target.value)} />
+      </Form.Item>
 
-					<GenericInput
-						type="text"
-						placeholder="CNPJ"
-						labelText="Digite o CNPJ"
-						name="cnpj"
-						value={formattedCNPJ}
-						onChange={handleCNPJChange}
-						minLength={18}
-						maxLength={18}
-					/>
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item name="city" label="Cidade" hasFeedback>
+            <Input disabled={!!formState.city || isLoadingCep} onChange={(e) => handleFieldChange("city", e.target.value)} />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item name="state" label="Estado" hasFeedback>
+            <Input disabled={!!formState.state || isLoadingCep} onChange={(e) => handleFieldChange("state", e.target.value)} />
+          </Form.Item>
+        </Col>
+      </Row>
 
-					<GenericInput
-						type="text"
-						placeholder="Digite o CEP"
-						labelText="CEP"
-						name="cep"
-						value={formattedCEP}
-						onChange={handleCepChange}
-						minLength={9}
-						maxLength={9}
-					/>
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item name="complement" label="Complemento" hasFeedback>
+            <Input onChange={(e) => handleFieldChange("complement", e.target.value)} />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item name="number" label="Número" hasFeedback>
+            <Input 
+            onChange={(e) => handleFieldChange("number", e.target.value)}
+            value={formState.number}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
 
-					<GenericInput
-						type="text"
-						placeholder="Rua"
-						labelText="Rua"
-						name="street"
-						value={formState.street}
-						onChange={handleInputChange}
-						disabled={!!formState.street || isLoadingCep}
-					/>
-
-					<div className="input-group">
-						<GenericInput
-							type="text"
-							placeholder="Cidade"
-							labelText="Cidade"
-							name="city"
-							value={formState.city}
-							onChange={handleInputChange}
-							disabled={!!formState.city || isLoadingCep}
-						/>
-
-						<GenericInput
-							type="text"
-							placeholder="Estado"
-							labelText="Estado"
-							name="state"
-							value={formState.state}
-							onChange={handleInputChange}
-							disabled={!!formState.state || isLoadingCep}
-						/>
-					</div>
-
-					<div className="input-group">
-						<GenericInput
-							type="text"
-							placeholder="Complemento"
-							labelText="Complemento"
-							name="complement"
-							value={formState.complement}
-							onChange={handleInputChange}
-						/>
-
-						<GenericInput
-							type="text"
-							placeholder="Número"
-							labelText="Número"
-							name="number"
-							value={formState.number}
-							onChange={handleInputChange}
-						/>
-					</div>
-
-					<GenericInput
-							type="text"
-							placeholder="Endereço da imagem"
-							labelText="Imagem"
-							name="image"
-							value={formState.image}
-							onChange={handleInputChange}
-					/>
-				</div>
-
-				<Button variant="contained" color="primary" type="submit">
-					Continuar
-				</Button>
-			</div>
-		</form>
-	);
+      <Form.Item>
+        <Button type="primary" htmlType="submit" block>
+          Continuar
+        </Button>
+      </Form.Item>
+    </Form>
+  );
 };

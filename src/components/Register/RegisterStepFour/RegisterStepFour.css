@@ -1,0 +1,24 @@
+.step-4-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 80vh;
+  align-items: flex-start;
+}
+.step-4-container .icon-text{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+.icon-grid {
+  margin: 24px 0;
+}
+
+.upload-area {
+  margin-top: 16px;
+  margin-bottom: 24px;
+}

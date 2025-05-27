@@ -67,7 +67,7 @@ const RegisterForm = ({ screenSize }: IProps) => {
   async function handleStepChange(delta: number) {
     setStep((prevStep) => prevStep + delta);
 
-    if (step === 5) {
+    if (step === 4) {
       const updatedBusinessDTO = {
         name: formData.name,
         cnpj: (formData as ICompanyRestaurant).cnpj,
