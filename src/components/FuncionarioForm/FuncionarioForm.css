@@ -1,24 +1,75 @@
 .funcionario-form-container {
 	display: flex;
 	flex-direction: column;
-	row-gap: 15px;
-	width: 100%;
+	
 }
 
 .funcionario-form-header {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
-	column-gap: 20px;
+
 }
 
 .funcionario-image {
 	width: 120px;
 	height: 120px;
-	background-color: #302f2f;
+	background-color: #f0f0f0;
 	border-radius: 50%;
-	margin: 1rem 0;
-	justify-content: space-between;
+	position: relative;
 	background-size: cover;
 	background-position: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.upload-button {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.6);
+	color: white;
+	border: none;
+	padding: 8px;
+	cursor: pointer;
+	opacity: 0;
+	transition: opacity 0.3s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+}
+
+.funcionario-image:hover .upload-button {
+	opacity: 1;
+}
+
+.funcionario-name {
+	font-size: 18px;
+	font-weight: 500;
+	color: #333;
+	margin: 0;
+}
+
+.error-message {
+	color: #ff4d4f;
+	margin-top: 5px;
+	font-size: 14px;
+}
+
+/* Estilização dos componentes do Ant Design */
+:where(.css-dev-only-do-not-override-1r287do).ant-form-item {
+	margin-bottom: 16px;
+}
+
+:where(.css-dev-only-do-not-override-1r287do).ant-input {
+	border-radius: 6px;
+}
+
+:where(.css-dev-only-do-not-override-1r287do).ant-form-item-label > label {
+	font-weight: 500;
+	color: #333;
 }
