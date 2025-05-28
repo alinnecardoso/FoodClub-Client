@@ -34,8 +34,7 @@ export default function FormDialog({
 	};
 
 	const handleClose = () => {
-		setOpen(false);
-		if (onClose) onClose();
+		if (onclose) onclose();
 	};
 
 	const handleOk = () => {
