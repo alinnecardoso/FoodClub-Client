@@ -8,7 +8,8 @@
 	color: rgba(0, 0, 0, 0.418);
 	display: flex;
 	align-items: center;
-	column-gap: 0.25rem;
+	column-gap: 1rem;
+
 }
 
 .nav-perfil-container {
@@ -78,6 +79,14 @@
 }
 
 @media (max-width: 899px) {
+.nav-identificacao-text {
+	display: none;
+} 
+
+.nav-perfil-container {
+	display: none;
+}
+
 	.nav-link.active {
 		background-color: #f9d6d6;
 		color: #7d0000;

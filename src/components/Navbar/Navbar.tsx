@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../stores/authStores";
 import "./Navbar.css";
 import { navIconsList } from "./NavIconsList";
-import { Storefront } from "@phosphor-icons/react";
+import { Buildings, Storefront, User } from "@phosphor-icons/react";
 
 const Navbar = () => {
 	const { user, logout } = useAuthStore();
@@ -49,10 +49,30 @@ const Navbar = () => {
 					{user.userType === "restaurant" && (
 						<div className="nav-identificacao">
 							<p className="nav-identificacao-text">
-								<Storefront size={32} />
+								<Storefront size={16} />
 							</p>
 							<p className="nav-identificacao-text">
 								Restaurante parceiro
+							</p>
+						</div>
+					)}
+					{user.userType === "company" && (
+						<div className="nav-identificacao">
+							<p className="nav-identificacao-text">
+								<Buildings size={16} />
+							</p>
+							<p className="nav-identificacao-text">
+								Empresa parceira
+							</p>
+						</div>
+					)}
+					{user.userType === "employee" && (
+						<div className="nav-identificacao">
+							<p className="nav-identificacao-icon">
+								<User size={16} />
+							</p>
+							<p className="nav-identificacao-text">
+								Funcionário
 							</p>
 						</div>
 					)}
