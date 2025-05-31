@@ -67,3 +67,11 @@ main {
 		padding-right: 200px;
 	}
 }
+
+.ellipsis-text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: inline-block;
+	COLOR: RED;
+}

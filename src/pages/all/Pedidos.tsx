@@ -1,32 +1,33 @@
-import { nanoid } from "nanoid";
-import CompanyOrder from "../../components/CompanyOrder/CompanyOrder";
+import { useEffect } from "react";
 import { useRestaurantStore } from "../../stores/restaurantStore";
 import "./Pedidos.css";
+import RestaurantOrdersTable from "./Orders/components/RestaurantOrdersTable";
 
 const Pedidos = () => {
-	const { restaurant } = useRestaurantStore();
+	const { restaurant, getRestaurant } = useRestaurantStore();
+
+	// Extrai o ID do restaurante salvo no Zustand (ou defina de outra fonte se necessário)
+	const restaurantId = restaurant?._id;
+
+	useEffect(() => {
+		// Garante que sempre que entrar na página, os dados sejam atualizados
+		if (restaurantId) {
+			getRestaurant(restaurantId);
+		}
+	}, [restaurantId, getRestaurant]);
 
 	return (
 		<div className="pedidos-container">
 			<div className="pedidos-header">
 				<h1>Pedidos</h1>
 			</div>
+
 			<div className="pedidos-container">
-				{restaurant?.companyOrders.map((coOrder) => {
-					return (
-						<CompanyOrder
-							key={nanoid()}
-							code={coOrder.code}
-							collaboratorsOrders={coOrder.collaboratorsOrders}
-							dishes={coOrder.dishes}
-							id={coOrder.id}
-							company={coOrder.company}
-							createdAt={coOrder.createdAt}
-							status={coOrder.status}
-							restaurant={coOrder.restaurant}
-						/>
-					);
-				})}
+				{restaurant?.companyOrders ? (
+					<RestaurantOrdersTable companyOrders={restaurant.companyOrders} />
+				) : (
+					<p>Carregando pedidos...</p>
+				)}
 			</div>
 		</div>
 	);

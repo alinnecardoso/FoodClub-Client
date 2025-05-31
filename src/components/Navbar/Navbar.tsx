@@ -7,7 +7,6 @@ import { Buildings, Storefront, User } from "@phosphor-icons/react";
 const Navbar = () => {
 	const { user, logout } = useAuthStore();
 	const navigate = useNavigate();
-	console.log(user)
 
 	if (user) {
 

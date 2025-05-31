@@ -5,7 +5,11 @@ import { IIndividualOrder } from "./IndividualOrder";
 export interface ICompanyOrder {
 	id: string;
 	dishes: IDish[];
-	company: string;
+	company: {
+		name: string
+		type: string
+		_id: string
+	}
 	collaboratorsOrders: IIndividualOrder[];
 	createdAt: string;
 	status: OrderStatus;
