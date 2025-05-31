@@ -28,7 +28,6 @@ export const RegisterStepTwo = ({
 	onDataChange,
 }: IRegisterStepTwoProps) => {
 	const [form] = Form.useForm();
-	const [userType] = useState(formData.userType);
 	const [, setData] = useState<ICompanyRestaurant | IEmployee>(formData);
 
 	function goToNextStep() {
@@ -143,7 +142,7 @@ export const RegisterStepTwo = ({
 
 						
 					</div>
-					<Form.Item style={{ marginTop: "2rem" }}>
+					<Form.Item style={{ margin: "0" }}>
 						<Button type="primary" htmlType="submit" block className="btn-red">
 							CONTINUAR
 						</Button>

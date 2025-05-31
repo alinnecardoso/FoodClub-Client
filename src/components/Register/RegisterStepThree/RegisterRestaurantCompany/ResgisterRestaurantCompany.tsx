@@ -16,13 +16,17 @@ import { formatCNPJ, isValidCNPJ } from "../../../../utils/isValidCNPJ";
 
 const { Title, Text } = Typography;
 
-const debounce = (func: (...args: any[]) => void, delay: number) => {
+const debounce = (
+  func: (arg: string) => void,
+  delay: number
+): ((arg: string) => void) => {
   let timeoutId: NodeJS.Timeout;
-  return (...args: any[]) => {
+  return (arg: string) => {
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => func(...args), delay);
+    timeoutId = setTimeout(() => func(arg), delay);
   };
 };
+
 
 export const RegisterRestaurantCompany = ({
   formData,
@@ -121,71 +125,73 @@ export const RegisterRestaurantCompany = ({
         cnpj: formatCNPJ(formState.cnpj),
         cep: formatCEP(formState.cep),
       }}
+      className="step-3-form"
     >
-      <Title level={3}>
-        {userTypeLabelMap[formState.userType] || ''}
-      </Title>
+      <div>
+        <Title level={3}>
+          {userTypeLabelMap[formState.userType] || ''}
+        </Title>
 
-      <Text type="secondary">
-        Informações da {userTypeLabelMap[formState.userType] || ''}
-      </Text>
+        <Text type="secondary">
+          Informações da {userTypeLabelMap[formState.userType] || ''}
+        </Text>
 
-      <Form.Item name="name" label="Nome" rules={[{ required: true }]} hasFeedback>
-        <Input onChange={(e) => handleFieldChange("name", e.target.value)} />
-      </Form.Item>
+        <Form.Item name="name" label="Nome" rules={[{ required: true }]} hasFeedback>
+          <Input onChange={(e) => handleFieldChange("name", e.target.value)} />
+        </Form.Item>
 
-      <Form.Item name="cnpj" label="CNPJ" rules={[
-        { required: true },
-        {
-          validator: (_, value) => isValidCNPJ(value) ? Promise.resolve() : Promise.reject("CNPJ inválido.")
-        }
-      ]} hasFeedback>
-        <Input onChange={handleCNPJChange} maxLength={18} placeholder="00.000.000/0000-00" />
-      </Form.Item>
+        <Form.Item name="cnpj" label="CNPJ" rules={[
+          { required: true },
+          {
+            validator: (_, value) => isValidCNPJ(value) ? Promise.resolve() : Promise.reject("CNPJ inválido.")
+          }
+        ]} hasFeedback>
+          <Input onChange={handleCNPJChange} maxLength={18} placeholder="00.000.000/0000-00" />
+        </Form.Item>
 
-      <Form.Item name="cep" label="CEP" rules={[
-        { required: true },
-        {
-          validator: (_, value) => isValidCEP(value) ? Promise.resolve() : Promise.reject("CEP inválido.")
-        }
-      ]} hasFeedback>
+        <Form.Item name="cep" label="CEP" rules={[
+          {
+            validator: (_, value) => isValidCEP(value) ? Promise.resolve() : Promise.reject("CEP inválido.")
+          }
+        ]} hasFeedback>
         <Input onChange={handleCEPChange} maxLength={9} placeholder="00000-000" />
-      </Form.Item>
+        </Form.Item>
 
-      <Form.Item name="street" label="Rua" hasFeedback>
-        <Input disabled={!!formState.street || isLoadingCep} onChange={(e) => handleFieldChange("street", e.target.value)} />
-      </Form.Item>
+        <Form.Item name="street" label="Rua" hasFeedback>
+          <Input disabled={!!formState.street || isLoadingCep} onChange={(e) => handleFieldChange("street", e.target.value)} />
+        </Form.Item>
 
-      <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item name="city" label="Cidade" hasFeedback>
-            <Input disabled={!!formState.city || isLoadingCep} onChange={(e) => handleFieldChange("city", e.target.value)} />
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item name="state" label="Estado" hasFeedback>
-            <Input disabled={!!formState.state || isLoadingCep} onChange={(e) => handleFieldChange("state", e.target.value)} />
-          </Form.Item>
-        </Col>
-      </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item name="city" label="Cidade" hasFeedback>
+              <Input disabled={!!formState.city || isLoadingCep} onChange={(e) => handleFieldChange("city", e.target.value)} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item name="state" label="Estado" hasFeedback>
+              <Input disabled={!!formState.state || isLoadingCep} onChange={(e) => handleFieldChange("state", e.target.value)} />
+            </Form.Item>
+          </Col>
+        </Row>
 
-      <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item name="complement" label="Complemento" hasFeedback>
-            <Input onChange={(e) => handleFieldChange("complement", e.target.value)} />
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item name="number" label="Número" hasFeedback>
-            <Input 
-            onChange={(e) => handleFieldChange("number", e.target.value)}
-            value={formState.number}
-            />
-          </Form.Item>
-        </Col>
-      </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item name="complement" label="Complemento" rules={[{ required: true, message: "Campo obrigatório." }]} hasFeedback>
+              <Input onChange={(e) => handleFieldChange("complement", e.target.value)} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item name="number" label="Número" rules={[{ required: true, message: "Campo obrigatório." }]} hasFeedback>
+              <Input 
+              onChange={(e) => handleFieldChange("number", e.target.value)}
+              value={formState.number}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      </div>
 
-      <Form.Item>
+      <Form.Item style={{ margin: "0" }}>
         <Button type="primary" htmlType="submit" block>
           Continuar
         </Button>

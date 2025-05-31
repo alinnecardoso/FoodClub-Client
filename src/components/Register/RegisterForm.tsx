@@ -4,11 +4,11 @@ import { RegisterStepOne } from "./RegisterStepOne/ResgisterStepOne";
 import { RegisterStepTwo } from "./RegisterStepTwo/RegisterStepTwo";
 import { RegisterStepThree } from "./RegisterStepThree/RegisterStepThree";
 import { RegisterStepFour } from "./RegisterStepFour/RegisterStepFour";
-import { RegisterStepFive } from "./RegisterStepFive/RegisterStepFive";
 import imagemFundo from "../../assets/eating a variety of foods-bro.svg";
 import { useAuthStore } from "../../stores/authStores";
 import { useNavigate } from "react-router-dom";
-import { Steps } from "antd";
+import { Steps, message } from "antd";
+
 
 interface IProps {
   screenSize: number;
@@ -42,7 +42,7 @@ export interface ICompanyRestaurant {
 }
 
 const RegisterForm = ({ screenSize }: IProps) => {
-  const { businessDTO, setBusinessDTO, createBusiness, checkAuth } = useAuthStore();
+  const { businessDTO, setBusinessDTO, createBusiness } = useAuthStore();
   const navigate = useNavigate();
 
   const [step, setStep] = useState<number>(1);
@@ -80,11 +80,15 @@ const RegisterForm = ({ screenSize }: IProps) => {
         verificationToken: businessDTO.verificationToken,
         verificationTokenExpireAt: businessDTO.verificationTokenExpireAt,
       };
-
-      setBusinessDTO(updatedBusinessDTO);
-      await createBusiness(updatedBusinessDTO);
-      await checkAuth();
-      navigate("/inicio", { replace: true });
+      try {
+        setBusinessDTO(updatedBusinessDTO);
+        await createBusiness(updatedBusinessDTO);
+        message.success("Conta criada com sucesso!");
+        navigate("/login", { replace: true }); 
+      } catch (err) {
+        console.error("Erro ao criar conta:", err);
+        message.error("Erro ao criar a conta. Tente novamente.");
+      }
     }
   }
 
@@ -126,14 +130,12 @@ const RegisterForm = ({ screenSize }: IProps) => {
             onDataChange={handleDataChange}
           />
         );
-      case 5:
-        return <RegisterStepFive />;
       default:
         return null;
     }
   };
 
-  const steps = Array.from({ length: 5 }, () => ({ title: "" }));
+  const steps = Array.from({ length: 4 }, () => ({ title: "" }));
 
   return (
     <div className="container">

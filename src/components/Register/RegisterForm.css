@@ -203,7 +203,7 @@ button.ant-btn-primary:focus {
 	.form-container{
 		display:flex;
 		flex-direction:column;
-		align-items: flex-end;
+    justify-content: flex-start;
 	}
 
   .form-container .custom-steps{

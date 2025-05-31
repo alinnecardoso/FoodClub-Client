@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ICompanyRestaurant, IEmployee } from "../RegisterForm";
 import { RegisterRestaurantCompany } from "./RegisterRestaurantCompany/ResgisterRestaurantCompany";
-import { RegisterEmployee } from "./RegisterEmployee/RegisterEmployee";
 import './RegisterStepThree.css'
 
 export interface IRegisterStepProps {
@@ -11,11 +10,10 @@ export interface IRegisterStepProps {
 }
 
 export const RegisterStepThree = ({ formData, onStepChange, onDataChange }: IRegisterStepProps) => {
-  const [isAnimating, ] = useState<boolean>(false);
   const [ userType, ] = useState<string>(formData.userType);
 
   return (
-    <div className={`step-3-container ${isAnimating ? "hidden" : "visible"}`} >
+    <div className={`step-3-container`} >
 
       {(userType === 'restaurant' || userType === 'company') && (
         <RegisterRestaurantCompany 
@@ -25,13 +23,6 @@ export const RegisterStepThree = ({ formData, onStepChange, onDataChange }: IReg
         />
       )}
 
-      {userType === 'colaborador' && (
-        <RegisterEmployee 
-          formData={formData} 
-          onStepChange={onStepChange}
-          onDataChange={onDataChange}
-        />
-      )}
     </div>
   )
 }

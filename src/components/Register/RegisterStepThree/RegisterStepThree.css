@@ -4,13 +4,12 @@ h1{
   color: #302F2F;
 }
 
-step-3-container.visible {
+.step-3-container.visible .step-3-form{
   display: flex;
-  flex-direction: row;
-  margin: 0;
+  flex-direction: column;
 }
 
-.input-group{
+.step-3-container .input-group{
   display: flex;
   column-gap: 1rem;
 }

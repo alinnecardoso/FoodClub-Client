@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from "react";
-import LoginForm from "../../components/LoginForm";
+import LoginForm from "../../components/Login/LoginForm";
 
 const Login = () => {
 	const [screenSize, setScreenSize] = useState<number>(window.innerWidth);
