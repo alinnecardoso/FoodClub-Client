@@ -20,21 +20,20 @@ const columns: TableProps<ICompanyOrder>["columns"] = [
         {text}
       </a>
     ),
-    width: "100px",
+    width: "15%",
   },
   {
     title: "Empresa",
     dataIndex: "company",
     key: "company",
-    width: "200px",
-    className: "ellipsis-text",
-    render: (company) => <p style={{ fontWeight: "bold", maxWidth: "200px" }}>{company.name}</p>,
+    width: "35%",
+    render: (company) => <p style={{ fontWeight: "bold" }}>{company.name}</p>,
   },
   {
     title: "Pedido em",
     dataIndex: "createdAt",
     key: "createdAt",
-    width: "170px",
+    width: "25%",
     render: (value: string) => {
       const date = new Date(value);
       return date.toLocaleString("pt-BR", {
@@ -50,7 +49,7 @@ const columns: TableProps<ICompanyOrder>["columns"] = [
     title: "Status",
     dataIndex: "status",
     key: "status",
-    width: "150px",
+    width: "25%",
     render: (text: OrderStatus) => (
       <Tag color={statusColors[text] || "default"} style={{ fontWeight: "bold" }}>
         {text}

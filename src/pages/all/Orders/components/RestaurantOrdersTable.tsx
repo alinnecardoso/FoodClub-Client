@@ -8,8 +8,8 @@ interface RestaurantOrdersTableProps {
 
 const RestaurantOrdersTable = ({ companyOrders }: RestaurantOrdersTableProps) => {
   return (
-    <div style={{ width: "50%" }}>
-      <Table dataSource={companyOrders} columns={columns} rowKey="_id" />
+    <div style={{ width: "100%", paddingLeft: "5vh" }}>
+      <Table dataSource={companyOrders} columns={columns} rowKey="_id" style={{ width: "100%" }} />
     </div>
   );
 };
