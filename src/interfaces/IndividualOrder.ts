@@ -1,7 +1,10 @@
 export interface IIndividualOrder {
 	_id: string;
 	order: {
-		dishId: string;
+		dishId:  {
+			_id: string;
+			name: string;
+		}
 		quantity: number;
 	};
 	employee: string;

@@ -1,5 +1,5 @@
 import { Button, Modal } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, ReactNode } from 'react';
 
 type Props = {
   handleOk?: () => void;
@@ -8,7 +8,8 @@ type Props = {
   title?: string;
   okText?: string;
   cancelText?: string;
-  buttonText?: string; // texto do botão que abre o modal
+  buttonContent?: ReactNode; // conteúdo customizável do botão
+  buttonProps?: React.ComponentProps<typeof Button>; // permite passar props extras pro botão
 };
 
 const BasicModal = ({
@@ -18,7 +19,8 @@ const BasicModal = ({
   title = "Basic Modal",
   okText = "Save",
   cancelText = "Cancel",
-  buttonText = "Open Modal",
+  buttonContent = "Open Modal",
+  buttonProps = {},
 }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -38,12 +40,11 @@ const BasicModal = ({
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
-        {buttonText}
+      <Button type="primary" onClick={showModal} {...buttonProps}>
+        {buttonContent}
       </Button>
       <Modal
         title={title}
-        closable={{ 'aria-label': 'Custom Close Button' }}
         open={isModalOpen}
         onOk={onOk}
         onCancel={onCancel}

@@ -1,9 +1,8 @@
-import { Button, Table, TableProps, Tag } from "antd";
+import { Button, TableProps, Tag } from "antd";
 import { ICompanyOrder } from "../../../../interfaces/CompanyOrder";
 import { OrderStatus } from "../../../../enums/enums";
-import { ListBullets, ListDashes } from "@phosphor-icons/react";
+import { ListDashes } from "@phosphor-icons/react";
 import BasicModalButton from "../../../../components/Forms/Modal/BasicModalButton";
-import useCompanyOrderModalColumns from "./useCompanyOrderModal";
 
 const statusColors: Record<OrderStatus, string> = {
   [OrderStatus.Pendente]: "gold",
@@ -17,26 +16,26 @@ const columns: TableProps<ICompanyOrder>["columns"] = [
   {
     title: "Código",
     dataIndex: "code",
+    width: '',
     key: "code",
     render: (text) => (
-      <a className="ellipsis-text" style={{ maxWidth: "100px" }}>
+      <a className="ellipsis-text" >
         {text}
       </a>
     ),
-    width: "15%",
   },
   {
     title: "Empresa",
     dataIndex: "company",
+    width: 150,
     key: "company",
-    width: "25%",
-    render: (company) => <p style={{ fontWeight: "bold" }}>{company.name}</p>,
+    className: "ellipsis-text",
+    render: (company) => <p>{company.name}</p>,
   },
   {
     title: "Pedido em",
     dataIndex: "createdAt",
     key: "createdAt",
-    width: "25%",
     render: (value: string) => {
       const date = new Date(value);
       return date.toLocaleString("pt-BR", {
@@ -52,30 +51,11 @@ const columns: TableProps<ICompanyOrder>["columns"] = [
     title: "Status",
     dataIndex: "status",
     key: "status",
-    width: "25%",
     render: (text: OrderStatus) => (
       <Tag color={statusColors[text] || "default"} style={{ fontWeight: "bold" }}>
         {text}
       </Tag>
     ),
-  }, {
-    title: 'Ações',
-    render: (companyOrder: ICompanyOrder) => {
-
-
-      return <div>
-        <BasicModalButton title={`Detalhes do pedido ${companyOrder.code}`} buttonContent={<ListBullets size={16} />}>
-          {/* {companyOrder.collaboratorsOrders.map((individualOrder) => {
-          return (
-            <p key={individualOrder._id}>
-              {individualOrder.order.quantity} x {individualOrder.order.dishId.name}
-            </p>
-          );
-        })} */}
-          <Table  dataSource={companyOrder.collaboratorsOrders} columns={useCompanyOrderModalColumns({ companyOrder }).columns} />
-        </BasicModalButton>
-      </div>
-    }
   }
 ];
 

@@ -1,3 +1,4 @@
+import { Card } from "antd";
 import { useRestaurantStore } from "../../stores/restaurantStore";
 import GenericInput from "../GenericInput";
 import "./PratoForm.css";
@@ -14,7 +15,7 @@ const PratoForm = () => {
 	};
 
 	return (
-		<div className="prato-form-container">
+		<Card className="prato-form-container">
 			<GenericInput
 				type="text"
 				placeholder="Nome"
@@ -48,7 +49,7 @@ const PratoForm = () => {
 				value={dishDTO.description}
 				onChange={handleInputChange}
 			/>
-		</div>
+		</Card>
 	);
 };
 
