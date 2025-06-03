@@ -89,14 +89,14 @@ export const RegisterRestaurantCompany = ({
     const raw = e.target.value.replace(/\D/g, "").slice(0, 14);
     const masked = formatCNPJ(raw);
     form.setFieldsValue({ cnpj: masked });
-    handleFieldChange("cnpj", raw);
+    handleFieldChange("cnpj", masked);
   };
 
   const handleCEPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/\D/g, "").slice(0, 8);
     const masked = formatCEP(raw);
     form.setFieldsValue({ cep: masked });
-    handleFieldChange("cep", raw);
+    handleFieldChange("cep", masked);
     if (raw.length === 8) debouncedFetchAddress(raw);
   };
 
@@ -136,39 +136,45 @@ export const RegisterRestaurantCompany = ({
           Informações da {userTypeLabelMap[formState.userType] || ''}
         </Text>
 
-        <Form.Item name="name" label="Nome" rules={[{ required: true }]} hasFeedback>
-          <Input onChange={(e) => handleFieldChange("name", e.target.value)} />
+        <Form.Item  className="form-item" name="name" label="Nome" rules={[{ required: true }]} hasFeedback>
+          <Input size="small" onChange={(e) => handleFieldChange("name", e.target.value)} />
         </Form.Item>
 
-        <Form.Item name="cnpj" label="CNPJ" rules={[
-          { required: true },
+        <Form.Item className="form-item" name="cnpj" label="CNPJ" rules={[
+          { required: true, message: "Campo obrigatório." },
           {
             validator: (_, value) => isValidCNPJ(value) ? Promise.resolve() : Promise.reject("CNPJ inválido.")
           }
         ]} hasFeedback>
-          <Input onChange={handleCNPJChange} maxLength={18} placeholder="00.000.000/0000-00" />
-        </Form.Item>
-
-        <Form.Item name="cep" label="CEP" rules={[
-          {
-            validator: (_, value) => isValidCEP(value) ? Promise.resolve() : Promise.reject("CEP inválido.")
-          }
-        ]} hasFeedback>
-        <Input onChange={handleCEPChange} maxLength={9} placeholder="00000-000" />
-        </Form.Item>
-
-        <Form.Item name="street" label="Rua" hasFeedback>
-          <Input disabled={!!formState.street || isLoadingCep} onChange={(e) => handleFieldChange("street", e.target.value)} />
+          <Input size="small" onChange={handleCNPJChange} maxLength={18} placeholder="00.000.000/0000-00" />
         </Form.Item>
 
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name="city" label="Cidade" hasFeedback>
+            <Form.Item className="form-item" name="cep" label="CEP" rules={[
+              { required: true },
+              {
+                validator: (_, value) => isValidCEP(value) ? Promise.resolve() : Promise.reject("CEP inválido.")
+              }
+            ]} hasFeedback>
+              <Input onChange={handleCEPChange} maxLength={10} placeholder="00000-000" />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item className="form-item" name="street" label="Logradouro" hasFeedback>
+              <Input disabled={!!formState.street || isLoadingCep} onChange={(e) => handleFieldChange("street", e.target.value)} />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item className="form-item" name="city" label="Cidade" hasFeedback>
               <Input disabled={!!formState.city || isLoadingCep} onChange={(e) => handleFieldChange("city", e.target.value)} />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item name="state" label="Estado" hasFeedback>
+            <Form.Item className="form-item" name="state" label="Estado" hasFeedback>
               <Input disabled={!!formState.state || isLoadingCep} onChange={(e) => handleFieldChange("state", e.target.value)} />
             </Form.Item>
           </Col>
@@ -176,13 +182,13 @@ export const RegisterRestaurantCompany = ({
 
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name="complement" label="Complemento" rules={[{ required: true, message: "Campo obrigatório." }]} hasFeedback>
+            <Form.Item className="form-item" name="complement" label="Complemento" rules={[{ required: true, message: "Campo obrigatório." }]} hasFeedback>
               <Input onChange={(e) => handleFieldChange("complement", e.target.value)} />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item name="number" label="Número" rules={[{ required: true, message: "Campo obrigatório." }]} hasFeedback>
-              <Input 
+            <Form.Item className="form-item" name="number" label="Número" rules={[{ required: true, message: "Campo obrigatório." }]} hasFeedback>
+              <Input
               onChange={(e) => handleFieldChange("number", e.target.value)}
               value={formState.number}
               />

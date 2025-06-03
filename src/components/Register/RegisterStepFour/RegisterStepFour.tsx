@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Button, Typography, Upload, Space, message } from "antd";
+import { Button, Typography, Upload, Space, message, Row, Col } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import { ICompanyRestaurant, IEmployee } from "../RegisterForm";
 import './RegisterStepFour.css';
-import { avatarOptions } from '../../../data/mockData';
+import { avatarRestaurantOptions } from '../../../data/mockData';
 
 const { Title, Text } = Typography;
 
@@ -63,27 +63,29 @@ export const RegisterStepFour = ({ formData, onStepChange, onDataChange }: IProp
           Escolha um logo para sua {userTypeLabelMap[formData.userType] || ""}
         </Text>
 
-        <div className="icon-grid" style={{ marginTop: 24, marginBottom: 24 }}>
-          <Space wrap style={{ justifyContent: "center" }}>
-            {avatarOptions.map(({ key, image }) => (
+        <Row gutter={[16, 16]}>
+          {avatarRestaurantOptions.map(({ key, image }) => (
+            <Col span={8} key={key}> {/* 24 / 8 = 3 colunas por linha */}
               <img
-                key={key}
+                className="avatar-option"
                 src={image}
                 alt={key}
-                width={64}
-                height={64}
                 style={{
+                  aspectRatio: "1 / 1", // força quadrado
                   borderRadius: 8,
                   cursor: "pointer",
                   objectFit: "cover",
                   border:
-                    formData.image === image ? "2px solid #8B0000" : "2px solid transparent"
+                    formData.image === image
+                      ? "2px solid #8B0000"
+                      : "2px solid transparent"
                 }}
                 onClick={() => handleAvatarSelect(image)}
               />
-            ))}
-          </Space>
-        </div>
+            </Col>
+          ))}
+        </Row>
+
 
         <Text type="secondary" style={{ marginTop: 24, display: "block" }}>
           Ou faça upload de uma imagem

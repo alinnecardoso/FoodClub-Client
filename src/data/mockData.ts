@@ -135,9 +135,14 @@ export const employeesFoto = [
 	},
 ];
 
-export const avatarOptions = [
-	{ key: "avatar1", image: 'src/assets/img-companyRestaurant/img01.svg' },
-	{ key: "avatar2", image: 'src/assets/img-companyRestaurant/img02.svg' },
-	{ key: "avatar3", image: 'src/assets/img-companyRestaurant/img03.svg' },
-	{ key: "avatar4", image: 'src/assets/img-companyRestaurant/img04.svg' },
+export const avatarRestaurantOptions = [
+	{ key: "avatar1", image: 'src/assets/img-restaurant/Chef Hat.svg' },
+	{ key: "avatar2", image: 'src/assets/img-restaurant/Chef.svg' },
+	{ key: "avatar3", image: 'src/assets/img-restaurant/Cook.svg' },
+	{ key: "avatar4", image: 'src/assets/img-restaurant/Frying Pan.svg' },
+	{ key: "avatar5", image: 'src/assets/img-restaurant/Kitchen Room.svg' },
+	{ key: "avatar6", image: 'src/assets/img-restaurant/Rolling Pin.svg' },
+	{ key: "avatar7", image: 'src/assets/img-restaurant/Tableware.svg' },
+	{ key: "avatar8", image: 'src/assets/img-restaurant/Teapot.svg' },
+	{ key: "avatar9", image: 'src/assets/img-restaurant/Dining Room.svg' },
 ];

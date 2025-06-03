@@ -22,3 +22,12 @@
   margin-top: 16px;
   margin-bottom: 24px;
 }
+
+.step-4-container .avatar-option{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 100px;
+  width: 100%;
+}

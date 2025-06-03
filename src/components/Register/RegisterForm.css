@@ -130,13 +130,6 @@ button.ant-btn-primary:focus {
   display: none; /* Remove o texto */
 }
 
-/* Container geral dos steps */
-.custom-steps {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 32px;
-}
-
 /* Oculta o título padrão */
 .custom-steps .ant-steps-item-title {
   display: none;
@@ -174,9 +167,21 @@ button.ant-btn-primary:focus {
 .custom-steps {
   display: flex;
   justify-content: center;
-  margin-bottom: 24px;
+  /*margin-bottom: 24px;*/
   padding-bottom: 12px;
   border-bottom: 1px solid #eee;
+}
+
+.step-3-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 80vh;
+  justify-content: space-between;
+}
+
+.step-3-form .form-item{
+  margin: 0;
 }
 
 
