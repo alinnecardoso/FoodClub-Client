@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Typography, Upload, Space, message, Row, Col } from "antd";
+import { Button, Typography, Upload, message, Row, Col } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import { ICompanyRestaurant, IEmployee } from "../RegisterForm";
@@ -54,7 +54,7 @@ export const RegisterStepFour = ({ formData, onStepChange, onDataChange }: IProp
 
   return (
     <div className="step-4-container">
-      <div>
+      <div className="step-4-content">
         <Title level={3}>
 					{userTypeLabelMap[formData.userType?.toLowerCase()] || ''}
 				</Title>
@@ -63,9 +63,9 @@ export const RegisterStepFour = ({ formData, onStepChange, onDataChange }: IProp
           Escolha um logo para sua {userTypeLabelMap[formData.userType] || ""}
         </Text>
 
-        <Row gutter={[16, 16]}>
+        <Row gutter={[5, 5]}>
           {avatarRestaurantOptions.map(({ key, image }) => (
-            <Col span={8} key={key}> {/* 24 / 8 = 3 colunas por linha */}
+            <Col span={8} key={key} style={{ width: '2rem' }}> {/* 24 / 8 = 3 colunas por linha */}
               <img
                 className="avatar-option"
                 src={image}

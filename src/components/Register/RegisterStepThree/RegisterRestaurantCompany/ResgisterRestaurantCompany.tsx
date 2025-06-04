@@ -44,7 +44,6 @@ export const RegisterRestaurantCompany = ({
     complement: (formData as ICompanyRestaurant).complement || "",
     number: (formData as ICompanyRestaurant).number || "",
     userType: (formData as ICompanyRestaurant).userType || "",
-    image: (formData as ICompanyRestaurant).image || "",
   });
 
   const [isLoadingCep, setIsLoadingCep] = useState(false);
@@ -152,7 +151,7 @@ export const RegisterRestaurantCompany = ({
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item className="form-item" name="cep" label="CEP" rules={[
-              { required: true },
+              { required: true, message: "Campo obrigatório." },
               {
                 validator: (_, value) => isValidCEP(value) ? Promise.resolve() : Promise.reject("CEP inválido.")
               }
