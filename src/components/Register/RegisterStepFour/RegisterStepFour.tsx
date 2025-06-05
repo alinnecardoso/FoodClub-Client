@@ -4,7 +4,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import { ICompanyRestaurant, IEmployee } from "../RegisterForm";
 import './RegisterStepFour.css';
-import { avatarRestaurantOptions } from '../../../data/mockData';
+import { avatarRestaurantOptions, avatarCompanyOptions } from '../../../data/mockData';
 
 const { Title, Text } = Typography;
 
@@ -17,6 +17,11 @@ interface IProps {
 const userTypeLabelMap: { [key: string]: string } = {
     company: 'Empresa',
     restaurant: 'Restaurante'
+};
+
+const userTypeArticleMap: { [key: string]: string } = {
+    company: 'sua',
+    restaurant: 'seu'
 };
 
 export const RegisterStepFour = ({ formData, onStepChange, onDataChange }: IProps) => {
@@ -52,6 +57,13 @@ export const RegisterStepFour = ({ formData, onStepChange, onDataChange }: IProp
     setFileName(""); // limpa nome do upload
   };
 
+  const avatarOptions = formData.userType?.toLowerCase() === 'company' 
+    ? avatarCompanyOptions 
+    : avatarRestaurantOptions;
+
+  const userType = formData.userType?.toLowerCase() || '';
+  const article = userTypeArticleMap[userType] || '';
+
   return (
     <div className="step-4-container">
       <div className="step-4-content">
@@ -60,11 +72,11 @@ export const RegisterStepFour = ({ formData, onStepChange, onDataChange }: IProp
 				</Title>
 
         <Text type="secondary">
-          Escolha um logo para sua {userTypeLabelMap[formData.userType] || ""}
+          Escolha uma logo
         </Text>
 
         <Row gutter={[5, 5]}>
-          {avatarRestaurantOptions.map(({ key, image }) => (
+          {avatarOptions.map(({ key, image }) => (
             <Col span={8} key={key} style={{ width: '2rem' }}> {/* 24 / 8 = 3 colunas por linha */}
               <img
                 className="avatar-option"

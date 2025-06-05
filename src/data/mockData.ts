@@ -1,4 +1,3 @@
-
 export const howItWorkCardsInfo = [
 	{
 		iconAddress: "/assets/how-it-work-company-icon.png",
@@ -145,4 +144,13 @@ export const avatarRestaurantOptions = [
 	{ key: "avatar7", image: 'src/assets/img-restaurant/Tableware.svg' },
 	{ key: "avatar8", image: 'src/assets/img-restaurant/Teapot.svg' },
 	{ key: "avatar9", image: 'src/assets/img-restaurant/Dining Room.svg' },
+];
+
+export const avatarCompanyOptions = [
+	{ key: "company1", image: 'src/assets/img-company/office.svg' },
+	{ key: "company2", image: 'src/assets/img-company/building.svg' },
+	{ key: "company3", image: 'src/assets/img-company/team.svg' },
+	{ key: "company4", image: 'src/assets/img-company/businessman.svg' },
+	{ key: "company5", image: 'src/assets/img-company/business.svg' },
+	{ key: "company6", image: 'src/assets/img-company/Permanent Job.svg' },
 ];
