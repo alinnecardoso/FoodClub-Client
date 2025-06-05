@@ -11,7 +11,7 @@ import InitialPage from "./pages/all/InitialPage";
 import NotFoundPage from "./pages/all/NotFoundPage";
 import Login from "./pages/all/Login";
 import Register from "./pages/all/Register";
-import HomePage from "./pages/all/HomePage";
+import HomePage from "./pages/HomePage/HomePage";
 import Refeicoes from "./pages/restaurant/Refeicoes";
 import ProtectedLayout from "./components/ProtectedLayout";
 import Pedidos from "./pages/all/Pedidos";

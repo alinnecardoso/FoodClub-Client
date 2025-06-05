@@ -8,7 +8,6 @@ interface RestaurantOrdersTableProps {
 
 const RestaurantOrdersTable = ({ companyOrders }: RestaurantOrdersTableProps) => {
 
-  console.log(companyOrders)
   return (
     <Card >
       <Table dataSource={companyOrders} columns={columns} rowKey="_id" />

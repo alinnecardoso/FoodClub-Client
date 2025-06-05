@@ -9,6 +9,7 @@ import { handleAxiosError } from "../utils/utils";
 const API_URL = "http://localhost:5000/api/restaurant/";
 
 interface iRestaurantStore {
+	restaurants: IRestaurant[];
 	restaurant: IRestaurant | null;
 	isLoading: boolean;
 	error: string;
@@ -19,13 +20,16 @@ interface iRestaurantStore {
 	createDish: (dishDTO: IDishDTO) => Promise<void>;
 	cleanDishDTO: () => void;
 	listDishes: (restaurantId: string) => Promise<void>;
+	cleanDishes: () => void;
 	getRestaurant: (id: string) => Promise<void>;
 	updateCompanyOrderStatus: (id: string, status: string) => Promise<void>;
+	getRestaurants: () => Promise<void>;
 }
 
 export const useRestaurantStore = create<iRestaurantStore>()(
 	persist(
 		(set) => ({
+			restaurants: [],
 			restaurant: null,
 			isLoading: false,
 			message: "",
@@ -38,6 +42,8 @@ export const useRestaurantStore = create<iRestaurantStore>()(
 				restaurantId: "",
 			},
 			dishes: [],
+
+			cleanDishes: () => set({ dishes: [] }),
 
 			updateCompanyOrderStatus: async (companyOrderId: string, status: string) => {
 				try {
@@ -58,14 +64,35 @@ export const useRestaurantStore = create<iRestaurantStore>()(
 				}
 			},
 
-			getRestaurant: async (id: string) => {
+			getRestaurants: async () => {
 				try {
-					const response = await axios.get(API_URL + id);
+					set({ isLoading: true, error: "" });
+
+					const response = await axios.get(API_URL + "list");
+
 					if (!response.data.success) {
-						set({ error: response.data.message });
+						set({ error: response.data.message, isLoading: false });
 						return;
 					}
-					set({ restaurant: response.data.data });
+
+					set({
+						restaurants: response.data.data,
+						isLoading: false,
+					});
+				} catch (error) {
+					handleAxiosError(error, set);
+				}
+			},
+
+			getRestaurant: async (id: string) => {
+				try {
+					set({ isLoading: true, error: "" });
+					const response = await axios.get(API_URL + id);
+					if (!response.data.success) {
+						set({ error: response.data.message, isLoading: false });
+						return;
+					}
+					set({ restaurant: response.data.data, isLoading: false });
 				} catch (error) {
 					handleAxiosError(error, set);
 				}
@@ -113,6 +140,7 @@ export const useRestaurantStore = create<iRestaurantStore>()(
 			},
 
 			listDishes: async (restaurantId: string) => {
+				set({ isLoading: true, error: "", dishes: [] });
 				try {
 					const response = await axios.get(API_URL + restaurantId + "/dishes", {
 						withCredentials: true,
@@ -130,8 +158,8 @@ export const useRestaurantStore = create<iRestaurantStore>()(
 			},
 		}),
 		{
-			name: "restaurant-storage", // nome da chave no localStorage
-			partialize: (state) => ({ restaurant: state.restaurant }), // só persiste o que for necessário
+			name: "restaurant-storage",
+			partialize: (state) => ({ restaurant: state.restaurant }),
 		}
 	)
 );

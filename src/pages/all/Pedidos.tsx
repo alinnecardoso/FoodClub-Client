@@ -17,12 +17,12 @@ const Pedidos = () => {
 	}, [restaurantId, getRestaurant]);
 
 	return (
-		<div className="pedidos-container">
-			<div className="pedidos-header">
-				<h1 style={{ paddingLeft: "5vh" }}>Pedidos</h1>
+		<div >
+			<div >
+				<h1 >Pedidos</h1>
 			</div>
 
-			<div className="pedidos-container">
+			<div >
 				{restaurant?.companyOrders ? (
 					<RestaurantOrdersTable companyOrders={restaurant.companyOrders} />
 				) : (

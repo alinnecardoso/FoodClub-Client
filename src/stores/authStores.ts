@@ -91,8 +91,6 @@ export const useAuthStore = create<iAuthStore>((set) => ({
 				return;
 			}
 
-			console.log("response", response);
-
 			set({ user: response.data.data, isLoading: false });
 		} catch (error) {
 			handleAxiosError(error, set);
@@ -243,8 +241,6 @@ export const useAuthStore = create<iAuthStore>((set) => ({
 					withCredentials: true,
 				}
 			);
-
-			console.log(response);
 
 			if (response.data.success) {
 				localStorage.removeItem("user");

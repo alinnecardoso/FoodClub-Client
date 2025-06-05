@@ -7,9 +7,13 @@ type Props = {
   children?: React.ReactNode;
   title?: string;
   okText?: string;
+  width?: string;
+  maxWidth?: string;
   cancelText?: string;
-  buttonContent?: ReactNode; // conteúdo customizável do botão
-  buttonProps?: React.ComponentProps<typeof Button>; // permite passar props extras pro botão
+  buttonContent?: ReactNode;
+  buttonProps?: React.ComponentProps<typeof Button>;
+  style?: React.CSSProperties;
+
 };
 
 const BasicModal = ({
@@ -18,6 +22,8 @@ const BasicModal = ({
   children,
   title = "Basic Modal",
   okText = "Save",
+  width = '30%',
+  style,
   cancelText = "Cancel",
   buttonContent = "Open Modal",
   buttonProps = {},
@@ -49,7 +55,10 @@ const BasicModal = ({
         onOk={onOk}
         onCancel={onCancel}
         okText={okText}
+        style={style}
         cancelText={cancelText}
+        width={width}
+
       >
         {children}
       </Modal>

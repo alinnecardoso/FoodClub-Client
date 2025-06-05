@@ -1,8 +1,6 @@
-import { Button, TableProps, Tag } from "antd";
+import { TableProps, Tag } from "antd";
 import { ICompanyOrder } from "../../../../interfaces/CompanyOrder";
 import { OrderStatus } from "../../../../enums/enums";
-import { ListDashes } from "@phosphor-icons/react";
-import BasicModalButton from "../../../../components/Forms/Modal/BasicModalButton";
 
 const statusColors: Record<OrderStatus, string> = {
   [OrderStatus.Pendente]: "gold",

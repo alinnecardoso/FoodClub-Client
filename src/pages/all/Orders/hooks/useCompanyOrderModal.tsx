@@ -1,9 +1,8 @@
 import { Checkbox, TableProps } from "antd";
 import { IIndividualOrder } from "../../../../interfaces/IndividualOrder";
 
-type Props = {};
 
-const useCompanyOrderModalColumns = (props: Props) => {
+const useCompanyOrderModalColumns = () => {
   const columns: TableProps<IIndividualOrder>["columns"] = [
     {
       title: "Nome",
@@ -26,7 +25,7 @@ const useCompanyOrderModalColumns = (props: Props) => {
     {
       title: "Ações",
       key: "actions",
-      render: (_text, _record, _index) => <><Checkbox onChange={() => {}}>Pronto</Checkbox></>,
+      render: () => <><Checkbox onChange={() => { }}>Pronto</Checkbox></>,
       width: "25%", // manter alinhamento
     },
   ];

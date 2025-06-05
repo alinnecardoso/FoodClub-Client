@@ -1,0 +1,28 @@
+.restaurant-card {
+  display: flex;
+  align-items: center;
+  width: 300px;
+  height: 80px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 8px;
+  cursor: pointer;
+}
+
+.restaurant-card-content {
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+  height: 100%;
+}
+
+.restaurant-card-image {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.restaurant-card-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}

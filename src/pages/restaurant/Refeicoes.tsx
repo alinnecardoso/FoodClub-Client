@@ -45,7 +45,7 @@ const Refeicoes = () => {
 							labelText="Nome do prato"
 							name="name"
 							minLength={5}
-					
+
 						/>
 
 						<GenericInputAnt

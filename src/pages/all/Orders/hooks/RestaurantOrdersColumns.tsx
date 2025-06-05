@@ -1,9 +1,10 @@
-import { Button, Table, TableProps, Tag } from "antd";
+import { Table, TableProps, Tag } from "antd";
 import { ICompanyOrder } from "../../../../interfaces/CompanyOrder";
 import { OrderStatus } from "../../../../enums/enums";
-import { ListBullets, ListDashes } from "@phosphor-icons/react";
+import { ListBulletsIcon } from "@phosphor-icons/react";
 import BasicModalButton from "../../../../components/Forms/Modal/BasicModalButton";
 import useCompanyOrderModalColumns from "./useCompanyOrderModal";
+
 
 const statusColors: Record<OrderStatus, string> = {
   [OrderStatus.Pendente]: "gold",
@@ -62,17 +63,9 @@ const columns: TableProps<ICompanyOrder>["columns"] = [
     title: 'Ações',
     render: (companyOrder: ICompanyOrder) => {
 
-
       return <div>
-        <BasicModalButton title={`Detalhes do pedido ${companyOrder.code}`} buttonContent={<ListBullets size={16} />}>
-          {/* {companyOrder.collaboratorsOrders.map((individualOrder) => {
-          return (
-            <p key={individualOrder._id}>
-              {individualOrder.order.quantity} x {individualOrder.order.dishId.name}
-            </p>
-          );
-        })} */}
-          <Table  dataSource={companyOrder.collaboratorsOrders} columns={useCompanyOrderModalColumns({ companyOrder }).columns} />
+        <BasicModalButton width="800px" title={`Detalhes do pedido ${companyOrder.code}`} buttonContent={<ListBulletsIcon size={20} />}>
+          <IndividualOrdersModalTable companyOrder={companyOrder} />
         </BasicModalButton>
       </div>
     }
@@ -80,3 +73,13 @@ const columns: TableProps<ICompanyOrder>["columns"] = [
 ];
 
 export default columns;
+
+
+const IndividualOrdersModalTable = ({ companyOrder }: { companyOrder: ICompanyOrder }) => {
+
+  const modalColumns = useCompanyOrderModalColumns(companyOrder.collaboratorsOrders);
+
+  return (
+    <Table dataSource={companyOrder.collaboratorsOrders} columns={modalColumns.columns} rowKey="_id" />
+  );
+};

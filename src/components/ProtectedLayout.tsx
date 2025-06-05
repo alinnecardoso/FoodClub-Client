@@ -1,3 +1,4 @@
+import { Card } from "antd";
 import useCheckAuth from "../hooks/useCheckAuth";
 import Navbar from "./Navbar/Navbar";
 import { Outlet } from "react-router-dom";
@@ -7,9 +8,9 @@ const ProtectedLayout = () => {
 	return (
 		<>
 			<Navbar />
-			<div className="main-container">
+			<Card className="main-container" style={{ background: 'none' }}>
 				<Outlet />
-			</div>
+			</Card>
 		</>
 	);
 };
