@@ -1,0 +1,55 @@
+.colaboradores-container {
+	width: 80vw;
+}
+
+.colaboradores-header {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.colaborador-card {
+	width: 100%;
+	display: flex;
+	max-width: 340px;
+	border: 1px solid rgba(211, 211, 211, 0.356);
+	padding: 5px 10px;
+	align-items: center;
+	column-gap: 20px;
+	background: white;
+	height: 90px;
+	border-radius: 8px;
+	box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.089);
+}
+
+.colaborador-card img {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.colaborador-info {
+	flex-grow: 1;
+}
+
+.actions-container {
+	display: flex;
+	column-gap: 10px;
+}
+
+.colaboradores-card {
+	display: flex;
+	flex-direction: column;
+	row-gap: 1rem;
+}
+
+@media (min-width: 900px) {
+	.colaboradores-card {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		column-gap: 2rem;
+	}
+}
