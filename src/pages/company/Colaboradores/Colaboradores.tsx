@@ -1,23 +1,23 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import FuncionarioForm from "../../../components/FuncionarioForm/FuncionarioForm";
 import useCheckAuth from "../../../hooks/useCheckAuth";
 import { useAuthStore } from "../../../stores/authStores";
 import "./Colaboradores.css";
 import { useCompanyStore } from "../../../stores/companyStore";
 import useColaboradoresTableColumns from "./hooks/useColaboradoresTableColumns";
-import { Form, message, Table } from "antd";
+import { Form, message, Modal, Table } from "antd";
 import BasicModal from "../../../components/Forms/Modal/BasicModalButton";
 import { UserType } from "../../../enums/enums";
+import { useEmployeeStore } from "../../../stores/employeeStore";
 
-
+const { confirm } = Modal;
 
 const Colaboradores = () => {
 	useCheckAuth("/login");
-	const { employeeDTO, createEmployee, user, error } = useAuthStore();
+	const { createEmployee, user } = useAuthStore();
 	const { company, getCompany } = useCompanyStore();
+	const { removeEmployee } = useEmployeeStore();
 	const [form] = Form.useForm();
-
-
 
 	useEffect(() => {
 		if (!user) return;
@@ -34,9 +34,7 @@ const Colaboradores = () => {
 			});
 
 			const values = form.getFieldsValue(true);
-			console.log(values);
 			const response = await createEmployee(values);
-			console.log(response)
 			if (!response.success) {
 				message.error(response.error);
 				return;
@@ -49,18 +47,51 @@ const Colaboradores = () => {
 		}
 	};
 
+	// Função que chama a confirmação de exclusão
+	const showDeleteConfirm = (colaborador: any) => {
+		confirm({
+			title: `Deseja realmente remover ${colaborador.name}?`,
+			content: "Esse funcionário perderá seu acesso ao sistema.",
+			okText: "Sim, remover",
+			okType: "danger",
+			cancelText: "Cancelar",
+			centered: true,
+			onOk() {
+				handleDelete(colaborador._id);
+			},
+		});
+	};
+
+	// Função real que remove o colaborador (deve ser implementada para chamar a API)
+	const handleDelete = async (employeeId: string) => {
+		try {
+			const response = await removeEmployee(employeeId);
+
+			if (!response.success) {
+				message.error(response.error);
+				return;
+			} else {
+				console.log(response)
+				message.success(response.message);
+				getCompany(user._id);
+			}
+		} catch (error) {
+			console.error("Erro ao remover colaborador", error);
+
+		}
+	};
+
 	const columns = useColaboradoresTableColumns({
-		onEdit: (colaborador) => console.log('Editar', colaborador),
-		onDelete: (colaborador) => console.log('Excluir', colaborador),
+		onEdit: (colaborador) => console.log("Editar", colaborador),
+		onDelete: (colaborador) => showDeleteConfirm(colaborador),
 	});
 
-	function handleCancel(): void {
-
-	}
+	const handleCancel = () => {
+		form.resetFields();
+	};
 
 	return (
 		<div className="colaboradores-container">
-
 			<h1>Colaboradores</h1>
 			<BasicModal
 				title="Adicionar colaborador"
@@ -68,47 +99,18 @@ const Colaboradores = () => {
 				width="80%"
 				maxWidth="700px"
 				okText=""
-				handleCancel={() => handleCancel()}
-				handleOk={() => handleCreate()}
+				handleCancel={handleCancel}
+				handleOk={handleCreate}
 			>
 				<FuncionarioForm form={form} onFinish={handleCreate} />
 			</BasicModal>
-
 
 			<Table
 				columns={columns}
 				dataSource={company?.employees}
 				rowKey="_id"
-				scroll={{ x: 'max-content' }} // rolagem horizontal
+				scroll={{ x: "max-content" }}
 			/>
-
-
-			{/* <div className="colaboradores-card">
-				{company?.employees?.map((employee) => {
-					return (
-						<div className="colaborador-card">
-							<img
-								src={employee.image}
-								alt="Foto do funcionário"
-								onError={(e) => {
-									(e.target as HTMLImageElement).src =
-										"https://www.fatosdesconhecidos.com.br/wp-content/uploads/2020/01/images-600x377.png";
-								}}
-							/>
-
-							<div className="colaborador-info">
-								{" "}
-								<p className="colaborador-name">{employee.name}</p>
-								<p className="colaborador-email">{employee.email}</p>
-							</div>
-							<div className="actions-container">
-								<FaRegTrashCan fontSize={20} color="red" />
-								<MdEdit fontSize={20} />
-							</div>
-						</div>
-					);
-				})}
-			</div> */}
 		</div>
 	);
 };

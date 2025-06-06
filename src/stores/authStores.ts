@@ -139,6 +139,23 @@ export const useAuthStore = create<iAuthStore>((set) => ({
 		}
 	},
 
+	removeEmployee: async (employeeId: string) => {
+		try {
+			const response = await axios.delete(API_URL + "employee/" + employeeId, {
+				withCredentials: true,
+			});
+
+			if (!response.data.success) {
+				set({ error: response.data.message, isLoading: false });
+				return;
+			}
+
+			set({ isLoading: false, message: response.data.message });
+		} catch (error) {
+			handleAxiosError(error, set);
+		}
+	},
+
 
 	createBusiness: async (businessDTO: IBusinessDTO) => {
 		try {

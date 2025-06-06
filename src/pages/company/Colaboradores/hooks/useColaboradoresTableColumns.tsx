@@ -27,9 +27,7 @@ const useColaboradoresTableColumns = ({ onEdit, onDelete }: Props) => {
       title: 'Imagem',
       dataIndex: 'image',
       key: 'image',
-      render: (image?: string) => (
-        <Avatar src={image} alt="colaborador" />
-      ),
+      render: (image?: string) => <Avatar src={image} alt="colaborador" />,
     },
     {
       title: 'Nome',
