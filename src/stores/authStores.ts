@@ -26,6 +26,22 @@ function handleAxiosError(error: unknown, set: Function) {
 	}
 }
 
+export function formatAxiosError(error: unknown) {
+	if (axios.isAxiosError(error) && error.response) {
+		return {
+			error: error.response.data.message || "Erro desconhecido.",
+
+			success: false,
+		};
+	} else {
+		return {
+			success: false,
+			error: "Erro de conexão. Tente novamente mais tarde.",
+
+		};
+	}
+}
+
 interface iAuthStore {
 	user: IRestaurant | ICompany | IEmployee | null;
 	isAuthenticated: boolean;
@@ -43,7 +59,7 @@ interface iAuthStore {
 	cleanBusinessDto: () => void;
 	cleanEmployeeDto: () => void;
 	createBusiness: (businessDTO: IBusinessDTO) => Promise<void>;
-	createEmployee: (employeeDTO: iEmployeeDTO) => Promise<void>;
+	createEmployee: (employeeDTO: iEmployeeDTO) => void
 	setBusinessDTO: (businessDTO: IBusinessDTO) => void;
 	setEmployeeDTO: (employeeDTO: iEmployeeDTO) => void;
 	getRestaurant: (id: string) => Promise<void>;
@@ -102,6 +118,8 @@ export const useAuthStore = create<iAuthStore>((set) => ({
 	},
 
 	createEmployee: async (employeeDTO: iEmployeeDTO) => {
+		set({ isLoading: true, error: '', message: '' });
+
 		try {
 			const response = await axios.post(API_URL + "emsignup", employeeDTO, {
 				withCredentials: true,
@@ -109,14 +127,18 @@ export const useAuthStore = create<iAuthStore>((set) => ({
 
 			if (!response.data.success) {
 				set({ error: response.data.message, isLoading: false });
-				return;
+				return { success: false, message: response.data.message };
 			}
 
 			set({ isLoading: false, message: response.data.message });
+			return { success: true, message: response.data.message };
+
 		} catch (error) {
-			handleAxiosError(error, set);
+			return formatAxiosError(error);
+			// return { success: false, message: "Erro ao cadastrar" };
 		}
 	},
+
 
 	createBusiness: async (businessDTO: IBusinessDTO) => {
 		try {

@@ -16,7 +16,7 @@ import Refeicoes from "./pages/restaurant/Refeicoes";
 import ProtectedLayout from "./components/ProtectedLayout";
 import Pedidos from "./pages/all/Pedidos";
 import Gerenciar from "./pages/all/Gerenciar";
-import Colaboradores from "./pages/company/Colaboradores";
+import Colaboradores from "./pages/company/Colaboradores/Colaboradores";
 import Busca from "./pages/employee/Busca";
 import Perfil from "./pages/employee/Perfil";
 import PublicLayout from "./components/layouts/PublicLayout";

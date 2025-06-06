@@ -8,12 +8,11 @@ type Props = {
   title?: string;
   okText?: string;
   width?: string;
-  maxWidth?: string;
+  maxWidth?: string;          // adicionada
   cancelText?: string;
   buttonContent?: ReactNode;
   buttonProps?: React.ComponentProps<typeof Button>;
   style?: React.CSSProperties;
-
 };
 
 const BasicModal = ({
@@ -23,6 +22,7 @@ const BasicModal = ({
   title = "Basic Modal",
   okText = "Save",
   width = '30%',
+  maxWidth,                   // capturado
   style,
   cancelText = "Cancel",
   buttonContent = "Open Modal",
@@ -44,6 +44,12 @@ const BasicModal = ({
     setIsModalOpen(false);
   };
 
+  // Cria estilo para o modal combinando style + maxWidth
+  const modalStyle: React.CSSProperties = {
+    ...style,
+    maxWidth: maxWidth || undefined,
+  };
+
   return (
     <>
       <Button type="primary" onClick={showModal} {...buttonProps}>
@@ -55,10 +61,9 @@ const BasicModal = ({
         onOk={onOk}
         onCancel={onCancel}
         okText={okText}
-        style={style}
         cancelText={cancelText}
         width={width}
-
+        style={modalStyle}
       >
         {children}
       </Modal>

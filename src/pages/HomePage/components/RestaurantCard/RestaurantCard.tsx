@@ -26,10 +26,10 @@ const RestaurantHeader: React.FC<{ image?: string; name: string }> = ({ image, n
     ) : (
       <ForkKnife size={32} />
     )}
-    <p className="restaurant-card-name" style={{ margin: 0, fontWeight: 600, fontSize: 18 }}>
+    <p className="restaurant-card-name" >
       {name}
     </p>
-  </div>
+  </div >
 );
 
 const RestaurantCard: React.FC<RestaurantCardProps> = ({ image, name, restaurantId }) => {
@@ -60,7 +60,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({ image, name, restaurant
         open={isModalVisible}
         onCancel={closeModal}
         footer={null}
-        title={<RestaurantHeader image={image} name={name} />}
+        title={'Restaurante'}
         width={600}
         destroyOnHidden={true}
       >

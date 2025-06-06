@@ -1,24 +1,26 @@
 .funcionario-form-container {
-	display: flex;
-	flex-direction: column;
-	row-gap: 15px;
-	width: 100%;
+	padding: 16px;
+	border-radius: 8px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+	background: white;
+	border: 1px solid rgba(211, 211, 211, 0.356);
+	border-right: 8px solid red;
 }
 
 .funcionario-form-header {
 	display: flex;
-	align-items: center;
 	flex-direction: column;
-	column-gap: 20px;
+	align-items: center;
+	margin-bottom: 12px;
 }
 
-.funcionario-image {
-	width: 120px;
-	height: 120px;
-	background-color: #302f2f;
-	border-radius: 50%;
-	margin: 1rem 0;
-	justify-content: space-between;
-	background-size: cover;
-	background-position: center;
+.funcionario-form-header .ant-avatar {
+	margin-bottom: 8px;
+}
+
+.ant-form-item {
+	margin-bottom: 12px;
+	/* Reduz o espaço entre campos */
 }

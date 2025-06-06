@@ -37,7 +37,7 @@ const Refeicoes = () => {
 		<div className="refeicoes-container">
 			<div className="header-pratos-container">
 				<h1>Pratos</h1>
-				<BasicModalButton title="Adicionar prato" buttonText="Adicionar" handleCancel={() => handleCancel()} handleOk={() => handleSubmit()}  >
+				<BasicModalButton title="Adicionar prato" buttonContent="Adicionar" handleCancel={() => handleCancel()} handleOk={() => handleSubmit()}  >
 					<GenericForm onFinish={handleSubmit} form={form} >
 						<GenericInputAnt
 							type="text"

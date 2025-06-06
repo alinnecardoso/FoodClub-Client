@@ -11,7 +11,6 @@ interface Props {
 const RestaurantDishesModal: React.FC<Props> = ({ restaurantId }) => {
   const { listDishes, dishes, isLoading } = useRestaurantStore();
 
-  console.log(dishes)
   useEffect(() => {
     listDishes(restaurantId);
   }, [listDishes, restaurantId]);
@@ -29,28 +28,31 @@ const RestaurantDishesModal: React.FC<Props> = ({ restaurantId }) => {
           className="no-dishes-image"
         />
         <p className="no-dishes-message">
-          O restaurante está preparando delícias para você! Volte mais tarde.
+          Ainda não há nenhum prato cadastrado desse restaurante
+          <br />
+          Tente mais tarde para acompanhar as delícias
+
         </p>
       </div>
     );
   }
 
   return (
-    <Card className="dishes-container" >
+    <div className="dishes-container" >
       <div className="dishes-header">
         <h2 className="dishes-header-title">Cárdapio</h2>
       </div>
 
       {dishes.map((dish) => (
-        <Card key={dish._id} className="dish-card" hoverable>
+        <div key={dish._id} className="dish-card" >
           <div className="dish-content">
             {dish.image ? (
               <img
                 src={dish.image}
                 alt={dish.name}
                 className="dish-image"
-                width={120}
-                height={90}
+                width={50}
+                height={50}
               />
             ) : (
               <CookingPot size={16} />
@@ -60,9 +62,9 @@ const RestaurantDishesModal: React.FC<Props> = ({ restaurantId }) => {
               <p className="dish-price">R$ {dish.price.toFixed(2)}</p>
             </div>
           </div>
-        </Card>
+        </div>
       ))}
-    </Card>
+    </div>
   );
 };
 

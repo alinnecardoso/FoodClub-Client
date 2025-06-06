@@ -4,10 +4,10 @@
 
 .dishes-header {
   background-color: #7d0000;
-  /* cor principal */
+
   padding: 12px 16px;
   border-radius: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
 }
 
 .dishes-header-title {
@@ -32,21 +32,21 @@
 }
 
 .dish-card {
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
   border-radius: 8px;
 }
 
 .dish-content {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
 }
 
 .dish-image {
-  border-radius: 8px 0 0 8px;
+  border-radius: 8px;
   object-fit: cover;
   width: 120px;
-  height: 90px;
+  height: 80px;
   flex-shrink: 0;
 }
 

@@ -17,8 +17,9 @@
 }
 
 .restaurant-card-image {
-  border-radius: 50%;
+  border-radius: 8px;
   object-fit: cover;
+
 }
 
 .restaurant-card-name {
